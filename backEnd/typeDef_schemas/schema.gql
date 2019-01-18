@@ -25,6 +25,7 @@ type Message {
 }
 type Mutation {
     signupUser(username:String!, email: String!,password: String!): User!
+    createArticle(title: String!, imageUrl: String,kind: [String]!, description:String!,trumbs_up:Int,createdBy:ID!): Article!
 }
 type Query{
     getUser: User
