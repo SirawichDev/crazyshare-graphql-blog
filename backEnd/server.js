@@ -1,9 +1,18 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
+const filePath = path.join(__dirname, './typeDef_schemas/schema.gql');
+const schema = fs.readFileSync(filePath, 'utf-8');
+
+const Query = require('./resolvers/query');
+const Mutation = require('./resolvers/mutation');
+
 require('dotenv').config({ path: '.env' });
 const User = require('./models/User');
 const Article = require('./models/Article');
+
 mongoose
     .connect(
         process.env.M_DB,
@@ -13,7 +22,11 @@ mongoose
     .catch(err => console.log(err));
 
 const server = new ApolloServer({
-    typeDefs,
+    typeDefs: schema,
+    resolvers: {
+        Mutation,
+        Query
+    },
     context: {
         User,
         Article
