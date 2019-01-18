@@ -11,6 +11,25 @@ const Mutation = {
         }).save();
         console.log(newUser);
         return newUser;
+    },
+    createArticle: async (parent, args, { Article }) => {
+        const {
+            title,
+            imageUrl,
+            kind,
+            description,
+            trumbs_up,
+            createdBy
+        } = args;
+        const newArticle = new Article({
+            title,
+            imageUrl,
+            kind,
+            description,
+            trumbs_up,
+            createdBy
+        }).save();
+        return newArticle;
     }
 };
 
