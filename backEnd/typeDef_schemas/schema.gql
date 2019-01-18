@@ -1,0 +1,31 @@
+type User{
+    _id: ID
+    username: String! @unique
+    email: String! @unique
+    password: String!
+    avatar: String
+    joinDate: String
+    bookmarks: [Article]
+}
+type Article{
+    title: String!
+    imageUrl: String
+    kind: [String]
+    description: String!
+    createDate: String
+    trumbs_up: Int
+    createdBy: User!
+    messages: [Message]
+}
+
+type Message {
+    _id: ID
+    messsageDetail: String!
+    messageUser: User!
+}
+type Mutation {
+    signupUser(username:String!, email: String!,password: String!): User!
+}
+type Query{
+    getUser: User
+}
