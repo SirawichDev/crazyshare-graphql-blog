@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
     bookmarks: {
         type: [mongoose.Schema.Types.ObjectId],
         required: true,
-        ref: 'Post'
+        ref: 'Article'
     }
 });
 
