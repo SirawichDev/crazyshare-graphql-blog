@@ -1,47 +1,36 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
+const filePath = path.join(__dirname, './typeDef_schemas/schema.gql');
+const schema = fs.readFileSync(filePath, 'utf-8');
+
+const Query = require('./resolvers/query');
+const Mutation = require('./resolvers/mutation');
+
 require('dotenv').config({ path: '.env' });
+const User = require('./models/User');
+const Article = require('./models/Article');
 
 mongoose
-    .connect(process.env.M_DB)
+    .connect(
+        process.env.M_DB,
+        { useNewUrlParser: true }
+    )
     .then(() => console.log('Mongo Connected'))
     .catch(err => console.log(err));
 
-const Me = [
-    {
-        name: 'Sirawich',
-        haveMoney: true
-    }
-];
-const typeDefs = gql`
-    type Me {
-        name: String
-        haveMoney: Boolean
-    }
-    type Query {
-        getMe: [Me]
-    }
-    type Mutation {
-        moneyLost(name: String, haveMoney: Boolean): Me
-    }
-`;
-
-const resolvers = {
-    Query: {
-        getMe: () => Me
-    },
-    Mutation: {
-        moneyLost: (_, args) => {
-            const donthaveit = { name: args.name, haveMoney: args.haveMoney };
-            Me.push(donthaveit);
-            return donthaveit;
-        }
-    }
-};
 const server = new ApolloServer({
-    typeDefs,
-    resolvers
+    typeDefs: schema,
+    resolvers: {
+        Mutation,
+        Query
+    },
+    context: {
+        User,
+        Article
+    }
 });
 server.listen().then(({ url }) => {
     console.log(`Listen on port ${url}`);
