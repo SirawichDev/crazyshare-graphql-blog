@@ -1,12 +1,20 @@
 <template>
   <v-app>
+    <v-navigation-drawer
+      app
+      temporary
+      fixed
+      v-model="sideNav"
+    >
+
+    </v-navigation-drawer>
     <v-toolbar
       class="nav"
       fixed
       dark
-      color="white"
+      color="transparent"
     >
-      <v-toolbar-side-icon color="primary">
+      <v-toolbar-side-icon @click="toggle" color="primary">
       </v-toolbar-side-icon>
       <v-toolbar-title class="title">
         <router-link
@@ -46,11 +54,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <main>
-      <v-container class="mt-4">
-        <v-content>
-          <home />
-        </v-content>
-      </v-container>
+      <router-view/>
     </main>
   </v-app>
 </template>
@@ -63,6 +67,11 @@ export default {
   components: {
     Home
   },
+  data() {
+    return {
+      sideNav: false
+    };
+  },
   computed: {
     eachItem() {
       return [
@@ -71,13 +80,21 @@ export default {
         { icon: "polymer", title: "Sign Up", link: "/signup" }
       ];
     }
+  },
+  methods : {
+    toggle() {
+      this.sideNav = !this.sideNav;
+    }
   }
 };
 </script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
-.nav {
+.nav{
+  background-color: aquamarine;
+  border: 1px 1px 1px #444;
+
 }
 .title {
   font-family: "Concert One", cursive;
