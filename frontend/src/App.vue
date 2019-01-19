@@ -14,7 +14,10 @@
       dark
       color="transparent"
     >
-      <v-toolbar-side-icon @click="toggle" color="primary">
+      <v-toolbar-side-icon
+        @click="toggle"
+        color="primary"
+      >
       </v-toolbar-side-icon>
       <v-toolbar-title class="title">
         <router-link
@@ -54,7 +57,10 @@
       </v-toolbar-items>
     </v-toolbar>
     <main>
-      <router-view/>
+      <transition name="tranpage">
+        <router-view />
+
+      </transition>
     </main>
   </v-app>
 </template>
@@ -81,7 +87,7 @@ export default {
       ];
     }
   },
-  methods : {
+  methods: {
     toggle() {
       this.sideNav = !this.sideNav;
     }
@@ -91,10 +97,9 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
-.nav{
+.nav {
   background-color: aquamarine;
   border: 1px 1px 1px #444;
-
 }
 .title {
   font-family: "Concert One", cursive;
@@ -113,6 +118,30 @@ export default {
 }
 .login {
   background-color: #c5d86d;
+}
+.tranpage-enter-active,
+.tranpage-leave-active {
+  transition-property: opacity;
+  animation: bounce-in 0.5s;
+  transition-duration: 0.25s;
+}
+/* .tranpage-enter-active {
+  transition-delay: 0.25s;
+} */
+.tranpage-enter,
+.tranpage-leave-active {
+  opacity: 0;
+}
+@keyframes bounce-in {
+  0% {
+    transform: translateX(-1rem);
+  }
+  50% {
+    transform: translateX(-2rem);
+  }
+  100% {
+    transform: translateX(-3rem);
+  }
 }
 </style>
 
