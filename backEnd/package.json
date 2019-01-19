@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "frontend": "cd ../frontend && npm run serve",
+    "all": "concurrently --names \"server,frontend\" \"npm run dev --silent\" \"npm run frontend --silent\"",
     "client": "cd frontEnd && npm start"
   },
   "author": "SirawichDev",
