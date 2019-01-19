@@ -1,8 +1,8 @@
 <template>
-<v-app>
+    <v-app>
   <v-container class="mt-5">
     <v-content>
-      <h2>Welcome to CrazyDevShare</h2>
+      <h2>Signup</h2>
       <v-btn color="primary">click</v-btn>
     </v-content>
   </v-container>
@@ -11,9 +11,6 @@
 
 <script>
 export default {
-  name: 'home'
+
 }
 </script>
-
-<style scoped>
-</style>
