@@ -31,18 +31,12 @@
 import { gql } from "apollo-boost";
 export default {
   name: "home",
-  apollo: {
-    getArticle: {
-      query: gql`
-        query {
-          getArticle {
-            _id
-            title
-            imageUrl
-            description
-          }
-        }
-      `
+  created() {
+    this.getArticleSlide();
+  },
+  methods:{
+    getArticleSlide(){
+      this.$store.dispatch('getArticle');
     }
   }
 };
