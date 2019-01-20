@@ -8,6 +8,7 @@ type User{
     bookmarks: [Article]
 }
 type Article{
+    _id: ID
     title: String!
     imageUrl: String
     kind: [String]
