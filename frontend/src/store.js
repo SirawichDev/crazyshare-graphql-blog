@@ -6,10 +6,21 @@ import { client } from './main';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state: {},
-    mutations: {},
+    state: {
+        articles: [],
+        loading: false
+    },
+    mutations: {
+        initArticle: (state, payload) => {
+            state.articles = payload;
+        },
+        loading: (state, payload) => {
+            state.loading = payload;
+        }
+    },
     actions: {
-        getArticle: () => {
+        getArticle: ({ commit }) => {
+            commit('loading', true);
             client
                 .query({
                     query: gql`
@@ -23,12 +34,19 @@ export default new Vuex.Store({
                         }
                     `
                 })
-                .then(data => {
-                    console.log(data);
+                .then(({ data }) => {
+                    commit('loading', false);
+                    commit('initArticle', data.getArticle);
+                    console.log('🍕 Store.getAricle', data.getArticle);
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log('🦂 got Error', err);
+                    commit('loading', false);
                 });
         }
+    },
+    getters: {
+        articles: state => state.articles,
+        loading: state => state.loading
     }
 });
