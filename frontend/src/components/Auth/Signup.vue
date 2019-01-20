@@ -10,19 +10,19 @@
             id="id"
             required
           ></v-text-field>
-           <v-text-field
+          <v-text-field
             name="name"
             label="email"
             id="id"
             required
           ></v-text-field>
-                 <v-text-field
+          <v-text-field
             name="name"
             label="password"
             id="id"
             required
           ></v-text-field>
-                 <v-text-field
+          <v-text-field
             name="name"
             label="re-password"
             id="id"
