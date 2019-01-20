@@ -1,5 +1,6 @@
 <template>
   <v-app>
+
     <v-navigation-drawer
       app
       temporary
@@ -8,6 +9,7 @@
     >
 
     </v-navigation-drawer>
+    <v-container >
     <v-toolbar
       class="nav"
       fixed
@@ -24,6 +26,7 @@
           to="/"
           tag="span"
           style="cursor: pointer"
+          id="title"
         >
           CrazyDev-Share
         </router-link>
@@ -52,16 +55,15 @@
             left
             color="primary"
           >{{item.icon}}</v-icon>
-          {{item.title}}
+       <h3 id="title">   {{item.title}}</h3>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <main>
+    </v-container>
+
       <transition name="tranpage">
         <router-view />
-
       </transition>
-    </main>
   </v-app>
 </template>
 
@@ -95,14 +97,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
 .nav {
   background-color: aquamarine;
   border: 1px 1px 1px #444;
 }
-.title {
-  font-family: "Concert One", cursive;
+#title {
+  font-family: "Concert One", cursive !important;
   color: black;
   font-weight: 900;
 }
