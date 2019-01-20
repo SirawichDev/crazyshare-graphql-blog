@@ -4,9 +4,9 @@
     <v-container mt-5>
       <v-flex xs12>
         <div v-if="loading">--Loadin--</div>
-        <v-container v-else>
-          <v-flex>
-            <v-carousel
+        <v-container v-else >
+          <v-flex >
+            <v-carousel id="carousel"
               v-bind="{'cycle' :true}"
               interval="3000"
             >
@@ -50,6 +50,9 @@ export default {
 </script>
 
 <style scoped>
+#carousel{
+   box-shadow: 12px 10px 10px -6px #777 !important;
+}
 .title {
   position: absolute;
   left: 0;
