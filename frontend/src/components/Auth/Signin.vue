@@ -3,9 +3,8 @@
 
     <div class='box'>
       <div class='box-form'>
-        <div class='box-login-tab'></div>
         <div class='box-login-title'>
-          <div class='i i-login'></div>
+
           <h2>LOGIN</h2>
         </div>
         <div class='box-login'>
@@ -13,52 +12,47 @@
             class='fieldset-body'
             id='login_form'
           >
-            <button
-              onclick="openLoginInfo();"
-              class='b b-form i i-more'
-              title='Mais Informações'
-            ></button>
+<form @submit.prevent="signInuser">
             <p class='field'>
-              <label for='user'>E-MAIL</label>
-              <input
-                type='text'
-                id='user'
-                name='user'
-                title='Username'
-              />
-              <span
-                id='valida'
-                class='i i-warning'
-              ></span>
+              <v-text-field
+                name="name"
+                type="text"
+                v-model="username"
+                prepend-icon="face"
+                label="Username"
+                id="id"
+                required
+              ></v-text-field>
             </p>
             <p class='field'>
-              <label for='pass'>PASSWORD</label>
-              <input
-                type='password'
-                id='pass'
-                name='pass'
-                title='Password'
-              />
-              <span
-                id='valida'
-                class='i i-close'
-              ></span>
-            </p>
+              <v-text-field
+                name="password"
+                v-model="password"
+                type="password"
+                prepend-icon="memory"
+                label="Password"
+                required
+                id="id"
+              ></v-text-field>
 
-            <label class='checkbox'>
-              <input
-                type='checkbox'
-                value='TRUE'
-                title='Keep me Signed in'
-              /> Keep me Signed in
-            </label>
+            </p>
+            <v-layout
+              row
+              wrap
+            >
+              <v-flex xs8>
+
+                <h3>Don't have account ? <router-link to="/signup">Signup</router-link>
+                </h3>
+              </v-flex>
+            </v-layout>
 
             <input
               type='submit'
               id='do_login'
               value='Login'
-              title='SignUp'
             />
+            </form>
           </div>
         </div>
       </div>
@@ -67,7 +61,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Signin",
+  data(){
+    return {
+      username: "",
+      password:""
+    }
+  },
+  methods: {
+    signInuser(){
+      this.$store.dispatch('signInuser',{
+        username: this.username,
+        password: this.password
+      })
+    }
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -77,22 +87,21 @@ export default {};
   box-sizing: border-box;
 }
 
-
-
-h2, h3 {
+h2,
+h3 {
   font-size: 16px;
-	letter-spacing: -1px;
+  letter-spacing: -1px;
   line-height: 20px;
 }
 
 h2 {
-	color: #747474;
-	text-align: center;
+  color: #747474;
+  text-align: center;
 }
 
 h3 {
-	color: #032942;
-	text-align: right;
+  color: #032942;
+  text-align: right;
 }
 
 .i {
@@ -110,9 +119,6 @@ h3 {
   background-position: center;
 }
 
-
-
-
 .box {
   width: 330px;
   position: absolute;
@@ -120,7 +126,7 @@ h3 {
   left: 50%;
 
   -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .box-form {
@@ -130,35 +136,35 @@ h3 {
 }
 
 .box-login-tab {
-	width: 50%;
-	height: 40px;
-	background: #fdfdfd;
-	position: relative;
-	float: left;
-	z-index: 1;
+  width: 50%;
+  height: 40px;
+  background: #fdfdfd;
+  position: relative;
+  float: left;
+  z-index: 1;
 
   -webkit-border-radius: 6px 6px 0 0;
-     -moz-border-radius: 6px 6px 0 0;
-          border-radius: 6px 6px 0 0;
+  -moz-border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0;
 
-	-webkit-transform: perspective(5px) rotateX(0.93deg) translateZ(-1px);
-	        transform: perspective(5px) rotateX(0.93deg) translateZ(-1px);
-	-webkit-transform-origin: 0 0;
-	        transform-origin: 0 0;
-	-webkit-backface-visibility: hidden;
-	        backface-visibility: hidden;
+  -webkit-transform: perspective(5px) rotateX(0.93deg) translateZ(-1px);
+  transform: perspective(5px) rotateX(0.93deg) translateZ(-1px);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 
-	-webkit-box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
-     -moz-box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
-          box-shadow: 15px -15px 30px rgba(0,0,0,0.32);
+  -webkit-box-shadow: 15px -15px 30px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 15px -15px 30px rgba(0, 0, 0, 0.32);
+  box-shadow: 15px -15px 30px rgba(0, 0, 0, 0.32);
 }
 
 .box-login-title {
-	width: 35%;
-	height: 40px;
-	position: absolute;
-	float: left;
-	z-index: 2;
+  width: 35%;
+  height: 40px;
+  position: absolute;
+  float: left;
+  z-index: 2;
 }
 
 .box-login {
@@ -176,62 +182,66 @@ h3 {
   -moz-border-radius-topright: 6px;
   -moz-border-radius-bottomleft: 6px;
   -moz-border-radius-bottomright: 6px;
-   border-top-right-radius: 6px;
-   border-bottom-left-radius: 6px;
-   border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 
-  -webkit-box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
-     -moz-box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
-          box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
+  -webkit-box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
+  box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
 }
 
 .box-info {
-	width: 260px;
-	top: 60px;
+  width: 260px;
+  top: 60px;
   position: absolute;
-	right: -5px;
-	padding: 15px 15px 15px 30px;
-	background-color: rgba(255,255,255,0.6);
-	border: 1px solid rgba(255,255,255,0.2);
-	z-index: 0;
+  right: -5px;
+  padding: 15px 15px 15px 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 0;
 
-	-webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
 
-    -webkit-box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
-    -moz-box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
-    box-shadow: 15px 30px 30px rgba(0,0,0,0.32);
+  -webkit-box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
+  box-shadow: 15px 30px 30px rgba(0, 0, 0, 0.32);
 }
 
 .line-wh {
- 	width: 100%;
+  width: 100%;
   height: 1px;
   top: 0px;
   margin: 12px auto;
-	position: relative;
-	border-top: 1px solid rgba(255,255,255,0.3);
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /*--------------------
 Form
 ---------------------*/
 
-a { text-decoration: none; }
+a {
+  text-decoration: none;
+}
 
-button:focus { outline:0; }
+button:focus {
+  outline: 0;
+}
 
 .b {
-	height: 24px;
-	line-height: 24px;
-	background-color: transparent;
+  height: 24px;
+  line-height: 24px;
+  background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
 .b-form {
-	opacity: 0.5;
-	margin: 10px 20px;
+  opacity: 0.5;
+  margin: 10px 20px;
   float: right;
 }
 
@@ -245,10 +255,11 @@ button:focus { outline:0; }
   opacity: 1;
 }
 
-.b-support, .b-cta {
-	width: 100%;
-	padding: 0px 15px;
-  font-family: 'Quicksand', sans-serif;
+.b-support,
+.b-cta {
+  width: 100%;
+  padding: 0px 15px;
+  font-family: "Quicksand", sans-serif;
   font-weight: 700;
   letter-spacing: -1px;
   font-size: 16px;
@@ -256,8 +267,8 @@ button:focus { outline:0; }
   cursor: pointer;
 
   -webkit-border-radius: 16px;
-     -moz-border-radius: 16px;
-          border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
 }
 
 .b-support {
@@ -273,92 +284,96 @@ button:focus { outline:0; }
   color: #fff;
 }
 
-.b-support:hover, .b-cta:hover {
+.b-support:hover,
+.b-cta:hover {
   color: #fff;
-	background-color: #87314e;
-	border: #87314e 1px solid;
+  background-color: #87314e;
+  border: #87314e 1px solid;
 }
 
 .fieldset-body {
-    display: table;
+  display: table;
 }
 
 .fieldset-body p {
-    width: 100%;
-    display: inline-table;
-    padding: 5px 20px;
-    margin-bottom:2px;
+  width: 100%;
+  display: inline-table;
+  padding: 5px 20px;
+  margin-bottom: 2px;
 }
 
 label {
-	float: left;
+  float: left;
   width: 100%;
-	top: 0px;
-	color: #032942;
-	font-size: 13px;
-	font-weight: 700;
-	text-align: left;
-	line-height: 1.5;
+  top: 0px;
+  color: #032942;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.5;
 }
 
 label.checkbox {
-	float: left;
+  float: left;
   padding: 5px 20px;
-	line-height: 1.7;
+  line-height: 1.7;
 }
 
-input[type=text],
-input[type=password] {
-    width: 100%;
-    height: 32px;
-    padding: 0px 10px;
-    background-color: rgba(0,0,0,0.03);
-    border: none;
-    display: inline;
-    color: #303030;
-    font-size: 16px;
-    font-weight: 400;
-    float: left;
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  height: 32px;
+  padding: 0px 10px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border: none;
+  display: inline;
+  color: #303030;
+  font-size: 16px;
+  font-weight: 400;
+  float: left;
 
-    -webkit-box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05), 1px 1px 0px rgba(255,255,255,1);
-    -moz-box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05), 1px 1px 0px rgba(255,255,255,1);
-    box-shadow: inset 1px 1px 0px rgba(0,0,0,0.05), 1px 1px 0px rgba(255,255,255,1);
+  -webkit-box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.05),
+    1px 1px 0px rgba(255, 255, 255, 1);
+  -moz-box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.05),
+    1px 1px 0px rgba(255, 255, 255, 1);
+  box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.05),
+    1px 1px 0px rgba(255, 255, 255, 1);
 }
 
-input[type=text]:focus,
-input[type=password]:focus {
-    background-color: #f8f8c6;
-    outline: none;
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #f8f8c6;
+  outline: none;
 }
 
-input[type=submit]  {
+input[type="submit"] {
   width: 100%;
   height: 48px;
   margin-top: 24px;
   padding: 0px 20px;
-  font-family: 'Quicksand', sans-serif;
-	font-weight: 700;
-	font-size: 18px;
-	color: #fff;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
   line-height: 40px;
   text-align: center;
   background-color: #87314e;
-	border: 1px #87314e solid;
-	opacity: 1;
-	cursor: pointer;
+  border: 1px #87314e solid;
+  opacity: 1;
+  cursor: pointer;
 }
 
-input[type=submit]:hover {
-	background-color: #df405a;
+input[type="submit"]:hover {
+  background-color: #df405a;
   border: 1px #df405a solid;
 }
 
-input[type=submit]:focus {
-	outline: none;
+input[type="submit"]:focus {
+  outline: none;
 }
 
 p.field span.i {
-	width: 24px;
+  width: 24px;
   height: 24px;
   float: right;
   position: relative;
@@ -368,23 +383,27 @@ p.field span.i {
   display: none;
 
   -webkit-animation: bounceIn 0.6s linear;
-     -moz-animation: bounceIn 0.6s linear;
-  	   -o-animation: bounceIn 0.6s linear;
-          animation: bounceIn 0.6s linear;
+  -moz-animation: bounceIn 0.6s linear;
+  -o-animation: bounceIn 0.6s linear;
+  animation: bounceIn 0.6s linear;
 }
 
 /*--------------------
 Transitions
 ---------------------*/
 
-.box-form, .box-info, .b, .b-support, .b-cta,
-input[type=submit], p.field span.i {
-
-	-webkit-transition: all 0.3s;
-     -moz-transition: all 0.3s;
-      -ms-transition: all 0.3s;
-       -o-transition: all 0.3s;
-          transition: all 0.3s;
+.box-form,
+.box-info,
+.b,
+.b-support,
+.b-cta,
+input[type="submit"],
+p.field span.i {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 /*--------------------
@@ -395,15 +414,15 @@ Credits
   width: 100%;
   position: absolute;
   bottom: 4px;
-  font-family:'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 12px;
-  color: rgba(255,255,255,0.1);
+  color: rgba(255, 255, 255, 0.1);
   text-align: center;
   z-index: -1;
 }
 
 .icon-credits a {
   text-decoration: none;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255, 255, 255, 0.2);
 }
 </style>
