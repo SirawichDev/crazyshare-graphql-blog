@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
-import { GET_ARTICLE } from '../query/queries';
+import { GET_ARTICLE, GET_CURRENT_USER } from '../query/queries';
 import { SIGNIN_USER } from '../mutation/mutation';
 Vue.use(Vuex);
 
@@ -20,6 +20,19 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        getCurrentUser: ({ commit }) => {
+            commit('loading', true);
+            client
+                .query({
+                    query: GET_CURRENT_USER
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         getArticle: ({ commit }) => {
             commit('loading', true);
             client
@@ -37,6 +50,7 @@ export default new Vuex.Store({
                 });
         },
         signInuser: ({ commit }, payload) => {
+            commit('loading', true);
             client
                 .mutate({
                     mutation: SIGNIN_USER,
