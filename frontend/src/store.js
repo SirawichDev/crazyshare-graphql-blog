@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { gql } from 'apollo-boost';
 import { client } from './main';
 import { GET_ARTICLE } from '../query/queries';
+import { SIGNIN_USER } from '../mutation/mutation';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -34,6 +34,20 @@ export default new Vuex.Store({
                 .catch(err => {
                     console.log('🦂 got Error', err);
                     commit('loading', false);
+                });
+        },
+        signInuser: ({ commit }, payload) => {
+            client
+                .mutate({
+                    mutation: SIGNIN_USER,
+                    variables: payload
+                })
+                .then(({ data }) => {
+                    console.log('SigIn', data);
+                    localStorage.setItem('token', data.signinUser.token);
+                })
+                .catch(err => {
+                    console.log(err);
                 });
         }
     },
