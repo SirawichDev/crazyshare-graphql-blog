@@ -42,8 +42,9 @@ export default new Vuex.Store({
                     mutation: SIGNIN_USER,
                     variables: payload
                 })
-                .then(data => {
+                .then(({ data }) => {
                     console.log('SigIn', data);
+                    localStorage.setItem('token', data.signinUser.token);
                 })
                 .catch(err => {
                     console.log(err);
