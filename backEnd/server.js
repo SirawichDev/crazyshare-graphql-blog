@@ -20,11 +20,10 @@ mongoose
     )
     .then(() => console.log('Mongo Connected'))
     .catch(err => console.log(err));
-const getUser = token => {
+const getUser = async token => {
     if (token) {
         try {
-            let user = jwt.verify(token, process.env.SECRET);
-            console.log(user);
+            return await jwt.verify(token, process.env.SECRET);
         } catch (error) {
             console.error(error);
         }
@@ -36,10 +35,10 @@ const server = new ApolloServer({
         Mutation,
         Query
     },
-    context: ({ req }) => {
+    context: async ({ req }) => {
         console.log(req.headers['authorization']);
         const token = req.headers['authorization'];
-        return { User, Article, currentUser: getUser(token) };
+        return { User, Article, currentUser: await getUser(token) };
     }
 });
 server.listen().then(({ url }) => {
