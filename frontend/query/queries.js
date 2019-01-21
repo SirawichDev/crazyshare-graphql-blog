@@ -10,3 +10,19 @@ export const GET_ARTICLE = gql`
         }
     }
 `;
+
+export const GET_CURRENT_USER = gql`
+    query {
+        currentUser {
+            _id
+            username
+            email
+            avatar
+            bookmarks {
+                _id
+                title
+                imageUrl
+            }
+        }
+    }
+`;
