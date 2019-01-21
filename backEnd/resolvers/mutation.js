@@ -1,4 +1,10 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const createToken = (user, secret, expiresIn) => {
+    const { username, email } = user;
+    return jwt.sign({ username, email }, secret, { expiresIn });
+};
 const Mutation = {
     signupUser: async (parent, { username, email, password }, ctx, _) => {
         const user = await ctx.User.findOne({ username });
@@ -11,7 +17,7 @@ const Mutation = {
             password
         }).save();
         console.log(newUser);
-        return newUser;
+        return { token: createToken(newUser, process.env.SECRET, '2hr') };
     },
     signinUser: async (parent, args, ctx, info) => {
         const user = await ctx.User.findOne({ username: args.username });
@@ -25,7 +31,7 @@ const Mutation = {
         if (!checkPassword) {
             throw new Error('Invalid Password');
         }
-        return user;
+        return { token: createToken(user, process.env.SECRET, '2hr') };
     },
     createArticle: async (parent, args, { Article }) => {
         const {
