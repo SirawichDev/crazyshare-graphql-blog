@@ -1,8 +1,9 @@
+const bcrypt = require('bcrypt');
 const Mutation = {
     signupUser: async (parent, { username, email, password }, ctx, _) => {
         const user = await ctx.User.findOne({ username });
         if (user) {
-            throw new Error('already thi user in database');
+            throw new Error(`${user.username} already in database`);
         }
         const newUser = await new ctx.User({
             username,
@@ -11,6 +12,20 @@ const Mutation = {
         }).save();
         console.log(newUser);
         return newUser;
+    },
+    signinUser: async (parent, args, ctx, info) => {
+        const user = await ctx.User.findOne({ username: args.username });
+        if (!user) {
+            throw new Error('user not found');
+        }
+        const checkPassword = await bcrypt.compare(
+            args.password,
+            user.password
+        );
+        if (!checkPassword) {
+            throw new Error('Invalid Password');
+        }
+        return user;
     },
     createArticle: async (parent, args, { Article }) => {
         const {
