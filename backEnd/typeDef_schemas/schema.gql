@@ -25,6 +25,7 @@ type Message {
     messageUser: User!
 }
 type Mutation {
+    signinUser(username:String!, password: String!): User!
     signupUser(username:String!, email: String!,password: String!): User!
     createArticle(title: String!, imageUrl: String,kind: [String]!, description:String!,trumbs_up:Int,createdBy:ID!): Article!
 }
