@@ -7,13 +7,15 @@
       :multi-line="mode === 'multi-line'"
       :vertical="mode === 'vertical'"
     >
-    <h3>  {{ message.replace('GraphQL', '') }}</h3>
+    <v-icon class="mr-3" color="white">error</v-icon>
+    <h3>  {{ message.replace('GraphQL error:', '') }}</h3>
       <v-btn
-        color="pink"
+        color="red"
         flat
+        class="close"
         @click="snackbar = false"
       >
-        Close
+        Ok
       </v-btn>
     </v-snackbar>
   </v-card>
@@ -28,3 +30,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.close{
+    background-color: #fff;
+    font-weight: bold
+}
+</style>
