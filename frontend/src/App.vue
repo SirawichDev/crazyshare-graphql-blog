@@ -2,12 +2,49 @@
   <v-app>
 
     <v-navigation-drawer
-      app
+      absolute
+      class="sidenav"
       temporary
-      fixed
       v-model="sideNav"
     >
 
+      <v-list class="pa-1">
+        <v-list-tile class="title">
+          <v-list-tile-title>
+            Crazy Dev
+          </v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile v-if="user" avatar>
+          <v-list-tile-avatar>
+            <img  :src="uProfile.avatar">
+          </v-list-tile-avatar>
+
+          <v-list-tile-content v-if="user">
+            <v-list-tile-title>Hello {{uProfile.name}}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
+      <v-list
+        class="pt-0"
+        dense
+      >
+        <v-divider></v-divider>
+
+        <v-list-tile
+          v-for="item in eachSideBarItem"
+          :key="item.title"
+          :to="item.link"
+        >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-navigation-drawer>
     <v-container>
       <v-toolbar
@@ -41,6 +78,17 @@
         ></v-text-field>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
+            <v-btn flat to="/profile" v-if="user">
+                 <v-icon
+              class="hidden-sm-only"
+              left
+              color="primary"
+            >adb</v-icon>
+          <v-badge right color="blue darken-2">
+            <span slot="badge">1</span>
+            <h3 id="title">Profile</h3>
+          </v-badge>
+          </v-btn>
           <v-btn
             class="btn"
             flat
@@ -56,6 +104,7 @@
             >{{item.icon}}</v-icon>
             <h3 id="title"> {{item.title}}</h3>
           </v-btn>
+
         </v-toolbar-items>
       </v-toolbar>
     </v-container>
@@ -67,6 +116,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Home from "./components/Home";
 
 export default {
@@ -80,12 +130,42 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["user"]),
     eachItem() {
-      return [
+      let items = [
         { icon: "chat", title: "Articles", link: "/article" },
         { icon: "whatshot", title: "Sign In", link: "/signin" },
         { icon: "polymer", title: "Sign Up", link: "/signup" }
       ];
+      if (this.user) {
+        items = [
+          { icon: "chat", title: "Create Article", link: "/article" },
+          { icon: "polymer", title: "Logout", link: "/logout" }
+        ];
+      }
+      return items;
+    },
+    eachSideBarItem() {
+      let items = [
+        { icon: "chat", title: "Articles", link: "/article" },
+        { icon: "whatshot", title: "Sign In", link: "/signin" },
+        { icon: "polymer", title: "Sign Up", link: "/signup" }
+      ];
+      if (this.user) {
+        items = [
+          { icon: "chat", title: "Create Article", link: "/article" },
+          { icon: "whatshot", title: "U Profile", link: "/profile" },
+          { icon: "polymer", title: "Logout", link: "/logout" }
+        ];
+      }
+      return items;
+    },
+    uProfile() {
+      let sideitem = { name: "", avatar: "" };
+      if (this.user) {
+        sideitem = { name: this.user.username, avatar: this.user.avatar };
+      }
+      return sideitem;
     }
   },
   methods: {
@@ -99,13 +179,36 @@ export default {
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
 .nav {
-   background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-   border-radius: 2em;
-clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);}
+  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  border-radius: 2em;
+  clip-path: polygon(
+    0% 15%,
+    15% 15%,
+    15% 0%,
+    85% 0%,
+    85% 15%,
+    100% 15%,
+    100% 85%,
+    85% 85%,
+    85% 100%,
+    15% 100%,
+    15% 85%,
+    0% 85%
+  );
+}
 #title {
   font-family: "Concert One", cursive !important;
   color: black;
   font-weight: 900;
+}
+.sidenav{
+  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+}
+.title {
+  text-align: center;
+  font-family: "Concert One", cursive !important;
+  font-weight: 900;
+
 }
 v-text-field {
   color: #444 !important;
