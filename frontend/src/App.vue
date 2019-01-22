@@ -112,6 +112,16 @@
     <transition name="tranpage">
       <router-view />
     </transition>
+    <v-snackbar
+      v-model="snackbar"
+      color="green"
+      :timeout="3000"
+      bottom left
+    >
+    <v-icon  color= "white">spellcheck</v-icon>
+      Logged In !!
+      <v-btn class="gotit" dark flat color="white" @click="snackbar = false">Got It</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -126,8 +136,17 @@ export default {
   },
   data() {
     return {
-      sideNav: false
+      sideNav: false,
+      snackbar: false
     };
+  },
+  watch: {
+    user(newvalue,oldvalue){
+     if(newvalue){
+       this.snackbar = true;
+     }
+      console.log('🦙 oldvalue',oldvalue);
+    }
   },
   computed: {
     ...mapGetters(["user"]),
@@ -179,7 +198,7 @@ export default {
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
 .nav {
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+
   border-radius: 2em;
   clip-path: polygon(
     0% 15%,
@@ -244,6 +263,11 @@ v-text-field {
   100% {
     transform: translateX(-3rem);
   }
+}
+.gotit{
+  background-color: #fff;
+  border-radius: 10px;
+  color: green !important;
 }
 </style>
 
