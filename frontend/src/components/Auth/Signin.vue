@@ -11,16 +11,21 @@
             id='login_form'
           >
 
-            <form @submit.prevent="signInuser">
+            <v-form
+              @submit.prevent="signInuser"
+              v-model="isFormValid"
+              ref="form"
+              lazy-validation
+            >
               <p class='field'>
                 <v-text-field
-                  name="name"
+                  name="username"
+                  :rules="usernameReq"
                   type="text"
                   v-model="username"
                   prepend-icon="face"
                   label="Username"
                   id="id"
-                  required
                 ></v-text-field>
               </p>
               <p class='field'>
@@ -30,6 +35,7 @@
                   type="password"
                   prepend-icon="memory"
                   label="Password"
+                  :rules="passwordReq"
                   required
                   id="id"
                 ></v-text-field>
@@ -46,18 +52,21 @@
                 </v-flex>
               </v-layout>
 
-              <input
-                type='submit'
+              <v-btn     type='submit'
                 id='do_login'
-                value='Login'
-              />
-            </form>
+                :disabled="!isFormValid"
+                value='Login'>Login
+           </v-btn>
+            </v-form>
           </div>
         </div>
       </div>
     </div>
-                <error v-if="error" :message="error.message">
-              </error>
+    <error
+      v-if="error"
+      :message="error.message"
+    >
+    </error>
   </v-app>
 </template>
 
@@ -67,8 +76,17 @@ export default {
   name: "Signin",
   data() {
     return {
+      isFormValid: true,
       username: "",
-      password: ""
+      password: "",
+      usernameReq: [
+        username => !!username || "username is required",
+        username => username.length > 5 || "username must more than 5 charactor"
+      ],
+      passwordReq: [
+        password => !!password || "passoword is required",
+        password => password.length > 5 || "password must more than 5 charactor"
+      ]
     };
   },
   computed: {
@@ -83,10 +101,12 @@ export default {
   },
   methods: {
     signInuser() {
-      this.$store.dispatch("signInuser", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("signInuser", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   }
 };
@@ -352,13 +372,13 @@ input[type="password"] {
     1px 1px 0px rgba(255, 255, 255, 1);
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
+#do_login:focus,
+#do_login:focus {
   background-color: #f8f8c6;
   outline: none;
 }
 
-input[type="submit"] {
+#do_login{
   width: 100%;
   height: 48px;
   margin-top: 24px;
@@ -375,13 +395,16 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-input[type="submit"]:hover {
+#do_login:hover {
   background-color: #df405a;
   border: 1px #df405a solid;
 }
 
-input[type="submit"]:focus {
+#do_login:focus {
   outline: none;
+}
+#do_login:disabled{
+  border: #fff;
 }
 
 p.field span.i {
