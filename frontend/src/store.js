@@ -12,7 +12,8 @@ export default new Vuex.Store({
         articles: [],
         user: null,
         loading: false,
-        error: null
+        error: null,
+        authError: null
     },
     mutations: {
         initArticle: (state, payload) => {
@@ -28,6 +29,12 @@ export default new Vuex.Store({
             state.error = payload;
         },
         clearUser: state => {
+            state.user = null;
+        },
+        reAuth: (state, payload) => {
+            state.authError = payload;
+        },
+        signout: state => {
             state.user = null;
         }
     },
@@ -78,12 +85,19 @@ export default new Vuex.Store({
                     console.log('s', err);
                     commit('error', err);
                 });
+        },
+        signoutUser: async ({ commit }) => {
+            commit('signout');
+            localStorage.setItem('token', '');
+            await client.resetStore();
+            router.push('/');
         }
     },
     getters: {
         articles: state => state.articles,
         loading: state => state.loading,
         user: state => state.user,
-        error: state => state.error
+        error: state => state.error,
+        authError: state => state.authError
     }
 });

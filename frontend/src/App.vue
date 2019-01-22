@@ -14,9 +14,12 @@
             Crazy Dev
           </v-list-tile-title>
         </v-list-tile>
-        <v-list-tile v-if="user" avatar>
+        <v-list-tile
+          v-if="user"
+          avatar
+        >
           <v-list-tile-avatar>
-            <img  :src="uProfile.avatar">
+            <img :src="uProfile.avatar">
           </v-list-tile-avatar>
 
           <v-list-tile-content v-if="user">
@@ -78,16 +81,23 @@
         ></v-text-field>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-            <v-btn flat to="/profile" v-if="user">
-                 <v-icon
+          <v-btn
+            flat
+            to="/profile"
+            v-if="user"
+          >
+            <v-icon
               class="hidden-sm-only"
               left
               color="primary"
             >adb</v-icon>
-          <v-badge right color="blue darken-2">
-            <span slot="badge">1</span>
-            <h3 id="title">Profile</h3>
-          </v-badge>
+            <v-badge
+              right
+              color="blue darken-2"
+            >
+              <span slot="badge">1</span>
+              <h3 id="title">Profile</h3>
+            </v-badge>
           </v-btn>
           <v-btn
             class="btn"
@@ -116,11 +126,39 @@
       v-model="snackbar"
       color="green"
       :timeout="3000"
-      bottom left
+      bottom
+      left
     >
-    <v-icon  color= "white">spellcheck</v-icon>
+      <v-icon color="white">spellcheck</v-icon>
       Logged In !!
-      <v-btn class="gotit" dark flat color="white" @click="snackbar = false">Got It</v-btn>
+      <v-btn
+        class="gotit"
+        dark
+        flat
+        color="white"
+        @click="snackbar = false"
+      >Got It</v-btn>
+    </v-snackbar>
+    <v-snackbar
+            v-if="authError"
+      v-model="authErrorSnackbar"
+      color="red"
+      :timeout="5000"
+      bottom
+      left
+    >
+      <v-icon
+        color="white"
+      >spellcheck</v-icon>
+      {{authError.message}}
+      <v-btn
+        class="gotit"
+        dark
+        flat
+        color="white"
+        @click="snackbar = false"
+        to="/signin"
+      >Please signin again</v-btn>
     </v-snackbar>
   </v-app>
 </template>
@@ -136,20 +174,26 @@ export default {
   },
   data() {
     return {
+      authErrorSnackbar: false,
       sideNav: false,
       snackbar: false
     };
   },
   watch: {
-    user(newvalue,oldvalue){
-     if(newvalue){
-       this.snackbar = true;
-     }
-      console.log('🦙 oldvalue',oldvalue);
+    user(newvalue, oldvalue) {
+      if (newvalue) {
+        this.snackbar = true;
+      }
+      console.log("🦙 oldvalue", oldvalue);
+    },
+    authError(value) {
+      if (value !== null) {
+        this.authErrorSnackbar = true;
+      }
     }
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "authError"]),
     eachItem() {
       let items = [
         { icon: "chat", title: "Articles", link: "/article" },
@@ -198,7 +242,6 @@ export default {
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
 .nav {
-
   border-radius: 2em;
   clip-path: polygon(
     0% 15%,
@@ -220,14 +263,13 @@ export default {
   color: black;
   font-weight: 900;
 }
-.sidenav{
+.sidenav {
   background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
 }
 .title {
   text-align: center;
   font-family: "Concert One", cursive !important;
   font-weight: 900;
-
 }
 v-text-field {
   color: #444 !important;
@@ -264,7 +306,7 @@ v-text-field {
     transform: translateX(-3rem);
   }
 }
-.gotit{
+.gotit {
   background-color: #fff;
   border-radius: 10px;
   color: green !important;

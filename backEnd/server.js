@@ -25,7 +25,9 @@ const getUser = async token => {
         try {
             return await jwt.verify(token, process.env.SECRET);
         } catch (error) {
-            console.error(error);
+            throw new AuthenticationError(
+                'session is expired please re-login again '
+            );
         }
     }
 };
@@ -35,6 +37,7 @@ const server = new ApolloServer({
         Mutation,
         Query
     },
+    formatError: err => ({ name: err.name, message: err.message }),
     context: async ({ req }) => {
         console.log(req.headers['authorization']);
         const token = req.headers['authorization'];

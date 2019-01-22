@@ -25,13 +25,17 @@ export const client = new ApolloClient({
             }
         });
     },
-    onError: ({ graphqlError, networkError }) => {
+    onError: ({ graphQLErrors, networkError }) => {
         if (networkError) {
             console.log('[Problem from network]', networkError);
         }
-        if (graphqlError) {
-            for (let err of graphqlError) {
-                console.dir('graph Error', err);
+        if (graphQLErrors) {
+            for (let err of graphQLErrors) {
+                console.log('graph Error', err);
+                if (err.name === 'ReferenceError') {
+                    store.commit('reAuth', err);
+                    store.dispatch('signoutUser');
+                }
             }
         }
     }
