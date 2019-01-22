@@ -63,8 +63,7 @@ export default new Vuex.Store({
                 });
         },
         signInuser: ({ commit }, payload) => {
-            commit('loading', true);
-            commit('error', false);
+            commit('error', null);
             client
                 .mutate({
                     mutation: SIGNIN_USER,
