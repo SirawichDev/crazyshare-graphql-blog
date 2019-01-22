@@ -6,6 +6,8 @@ import router from './router';
 import store from './store';
 import ApolloClient from 'apollo-boost';
 import VueApollo from 'vue-apollo';
+import ErrorAlert from './components/Alert/Error/Error';
+Vue.component('error', ErrorAlert);
 Vue.use(VueApollo);
 
 export const client = new ApolloClient({
