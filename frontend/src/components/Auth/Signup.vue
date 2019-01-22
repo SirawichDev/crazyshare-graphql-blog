@@ -18,58 +18,50 @@
               class='b b-form i i-more'
               title='Mais Informações'
             ></button>
-            <p class='field'>
-              <label for='user'>E-MAIL</label>
-              <input
-                type='text'
-                id='user'
-                name='user'
-                title='Username'
-              />
-              <span
-                id='valida'
-                class='i i-warning'
-              ></span>
-            </p>
-            <p class='field'>
-              <label for='pass'>USERNAME</label>
-              <input
-                type='text'
-                id='pass'
-                name='pass'
-                title='Password'
-              />
-              <span
-                id='valida'
-                class='i i-close'
-              ></span>
-            </p>
+         <p class='field'>
+                <v-text-field
+                  name="name"
+                  type="text"
+                  v-model="username"
+                  prepend-icon="face"
+                  label="Username"
+                  id="id"
+                  required
+                ></v-text-field>
+              </p>
+           <p class='field'>
+                <v-text-field
+                  name="email"
+                  type="text"
+                  v-model="email"
+                  prepend-icon="email"
+                  label="Email"
+                  id="id"
+                  required
+                ></v-text-field>
+              </p>
   <p class='field'>
-              <label for='pass'>PASSWORD</label>
-              <input
-                type='password'
-                id='pass'
-                name='pass'
-                title='Password'
-              />
-              <span
-                id='valida'
-                class='i i-close'
-              ></span>
-            </p>
-              <p class='field'>
-              <label for='pass'>VALIDATE-PASSWORD</label>
-              <input
-                type='password'
-                id='pass'
-                name='pass'
-                title='Password'
-              />
-              <span
-                id='valida'
-                class='i i-close'
-              ></span>
-            </p>
+                <v-text-field
+                  name="name"
+                  type="password"
+                  v-model="password"
+                  prepend-icon="lock"
+                  label="Password"
+                  id="id"
+                  required
+                ></v-text-field>
+              </p>
+            <p class='field'>
+                <v-text-field
+                  name="name"
+                  type="text"
+                  v-model="validatepassword"
+                  prepend-icon="lock"
+                  label="validate-password"
+                  id="id"
+                  required
+                ></v-text-field>
+              </p>
             <label class='checkbox'>
               <input
                 type='checkbox'

@@ -4,77 +4,89 @@
     <div class='box'>
       <div class='box-form'>
         <div class='box-login-title'>
-
-          <h2>LOGIN</h2>
         </div>
         <div class='box-login'>
           <div
             class='fieldset-body'
             id='login_form'
           >
-<form @submit.prevent="signInuser">
-            <p class='field'>
-              <v-text-field
-                name="name"
-                type="text"
-                v-model="username"
-                prepend-icon="face"
-                label="Username"
-                id="id"
-                required
-              ></v-text-field>
-            </p>
-            <p class='field'>
-              <v-text-field
-                name="password"
-                v-model="password"
-                type="password"
-                prepend-icon="memory"
-                label="Password"
-                required
-                id="id"
-              ></v-text-field>
 
-            </p>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex xs8>
+            <form @submit.prevent="signInuser">
+              <p class='field'>
+                <v-text-field
+                  name="name"
+                  type="text"
+                  v-model="username"
+                  prepend-icon="face"
+                  label="Username"
+                  id="id"
+                  required
+                ></v-text-field>
+              </p>
+              <p class='field'>
+                <v-text-field
+                  name="password"
+                  v-model="password"
+                  type="password"
+                  prepend-icon="memory"
+                  label="Password"
+                  required
+                  id="id"
+                ></v-text-field>
 
-                <h3>Don't have account ? <router-link to="/signup">Signup</router-link>
-                </h3>
-              </v-flex>
-            </v-layout>
+              </p>
+              <v-layout
+                row
+                wrap
+              >
+                <v-flex xs8>
 
-            <input
-              type='submit'
-              id='do_login'
-              value='Login'
-            />
+                  <h3>Don't have account ? <router-link to="/signup">Signup</router-link>
+                  </h3>
+                </v-flex>
+              </v-layout>
+
+              <input
+                type='submit'
+                id='do_login'
+                value='Login'
+              />
             </form>
           </div>
         </div>
       </div>
     </div>
+                <error v-if="error" :message="error.message">
+              </error>
   </v-app>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Signin",
-  data(){
+  data() {
     return {
       username: "",
-      password:""
+      password: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["user", "error"])
+  },
+  watch: {
+    user(value) {
+      if (value) {
+        this.$router.push("/");
+      }
     }
   },
   methods: {
-    signInuser(){
-      this.$store.dispatch('signInuser',{
+    signInuser() {
+      this.$store.dispatch("signInuser", {
         username: this.username,
         password: this.password
-      })
+      });
     }
   }
 };
