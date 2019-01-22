@@ -11,7 +11,8 @@ export default new Vuex.Store({
     state: {
         articles: [],
         user: null,
-        loading: false
+        loading: false,
+        error: null
     },
     mutations: {
         initArticle: (state, payload) => {
@@ -22,6 +23,12 @@ export default new Vuex.Store({
         },
         setUser: (state, payload) => {
             state.user = payload;
+        },
+        error: (state, payload) => {
+            state.error = payload;
+        },
+        clearUser: state => {
+            state.user = null;
         }
     },
     actions: {
@@ -57,6 +64,7 @@ export default new Vuex.Store({
         },
         signInuser: ({ commit }, payload) => {
             commit('loading', true);
+            commit('error', false);
             client
                 .mutate({
                     mutation: SIGNIN_USER,
@@ -68,13 +76,15 @@ export default new Vuex.Store({
                     router.go();
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log('s', err);
+                    commit('error', err);
                 });
         }
     },
     getters: {
         articles: state => state.articles,
         loading: state => state.loading,
-        user: state => state.user
+        user: state => state.user,
+        error: state => state.error
     }
 });
