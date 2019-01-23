@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
 import { GET_ARTICLE, GET_CURRENT_USER } from '../query/queries';
-import { SIGNIN_USER, SIGNUP_USER } from '../mutation/mutation';
+import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
 import router from './router';
 Vue.use(Vuex);
 
@@ -106,6 +106,30 @@ export default new Vuex.Store({
             localStorage.setItem('token', '');
             await client.resetStore();
             router.push('/');
+        },
+        createArticle: async ({ commit }, payload) => {
+            commit('loading', true);
+            client
+                .mutate({
+                    mutation: ADD_ARTICLE,
+                    variables: payload,
+                    update: (cache, { data: { createArticle } }) => {
+                        console.log('cache' + cache, 'data' + data);
+                        const data = cache.readQuery({ query: GET_ARTICLE });
+                        data.getArticle.unshift(createArticle);
+                        console.log('data.getArticle', data.getArticle);
+                        cache.writeQuery({
+                            query: GET_ARTICLE,
+                            data
+                        });
+                    }
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     getters: {
