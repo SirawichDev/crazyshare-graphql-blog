@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
 import { GET_ARTICLE, GET_CURRENT_USER } from '../query/queries';
-import { SIGNIN_USER } from '../mutation/mutation';
+import { SIGNIN_USER, SIGNUP_USER } from '../mutation/mutation';
 import router from './router';
 Vue.use(Vuex);
 
@@ -84,6 +84,24 @@ export default new Vuex.Store({
                 .catch(err => {
                     console.log('s', err);
                     commit('error', err);
+                });
+        },
+        signUpuser: ({ commit }, payload) => {
+            commit('loading', true);
+            localStorage.setItem('token', '');
+            client
+                .mutate({
+                    mutation: SIGNUP_USER,
+                    variables: payload
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                    localStorage.setItem('token', data.signupUser.token);
+                    router.go();
+                })
+                .catch(err => {
+                    console.log(err);
+                    commit('error', err.message);
                 });
         },
         signoutUser: async ({ commit }) => {
