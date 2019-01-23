@@ -202,7 +202,7 @@ export default {
       ];
       if (this.user) {
         items = [
-          { icon: "chat", title: "Create Article", link: "/article" },
+          { icon: "chat", title: "Article", link: "/article" },
           { icon: "polymer", title: "Logout", link: "/logout" }
         ];
       }
@@ -216,7 +216,7 @@ export default {
       ];
       if (this.user) {
         items = [
-          { icon: "chat", title: "Create Article", link: "/article" },
+          { icon: "chat", title: "Create Article", link: "/article/add" },
           { icon: "whatshot", title: "U Profile", link: "/profile" },
           { icon: "polymer", title: "Logout", link: "/logout" }
         ];

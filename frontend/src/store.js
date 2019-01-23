@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
 import { GET_ARTICLE, GET_CURRENT_USER } from '../query/queries';
-import { SIGNIN_USER, SIGNUP_USER } from '../mutation/mutation';
+import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
 import router from './router';
 Vue.use(Vuex);
 
@@ -86,8 +86,7 @@ export default new Vuex.Store({
                     commit('error', err);
                 });
         },
-        signUpuser: ({ commit }, payload) => {
-            commit('loading', true);
+        signUpuser: async ({ commit }, payload) => {
             localStorage.setItem('token', '');
             client
                 .mutate({
@@ -95,13 +94,11 @@ export default new Vuex.Store({
                     variables: payload
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     localStorage.setItem('token', data.signupUser.token);
                     router.go();
                 })
                 .catch(err => {
-                    console.log(err);
-                    commit('error', err.message);
+                    commit('error', err);
                 });
         },
         signoutUser: async ({ commit }) => {
@@ -109,6 +106,30 @@ export default new Vuex.Store({
             localStorage.setItem('token', '');
             await client.resetStore();
             router.push('/');
+        },
+        createArticle: async ({ commit }, payload) => {
+            commit('loading', true);
+            client
+                .mutate({
+                    mutation: ADD_ARTICLE,
+                    variables: payload,
+                    update: (cache, { data: { createArticle } }) => {
+                        console.log('cache' + cache, 'data' + data);
+                        const data = cache.readQuery({ query: GET_ARTICLE });
+                        data.getArticle.unshift(createArticle);
+                        console.log('data.getArticle', data.getArticle);
+                        cache.writeQuery({
+                            query: GET_ARTICLE,
+                            data
+                        });
+                    }
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     getters: {

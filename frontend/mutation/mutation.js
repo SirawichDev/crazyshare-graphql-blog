@@ -15,3 +15,28 @@ export const SIGNIN_USER = gql`
         }
     }
 `;
+
+export const ADD_ARTICLE = gql`
+    mutation(
+        $title: String!
+        $imageUrl: String
+        $kind: [String]!
+        $description: String!
+        $createdBy: ID!
+    ) {
+        createArticle(
+            title: $title
+            imageUrl: $imageUrl
+            kind: $kind
+            description: $description
+            createdBy: $createdBy
+        ) {
+            _id
+            title
+            imageUrl
+            kind
+            description
+            trumbs_up
+        }
+    }
+`;

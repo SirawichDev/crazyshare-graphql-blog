@@ -20,6 +20,31 @@ const Query = {
     getUser: async (parent, args, { User }) => {
         const user = await User.find({}).sort({ joinDate: 'desc' });
         return user;
+    },
+    infiniteScrollArticle: async (_, args, { Article }) => {
+        let article;
+        if (args.pageNum === 1) {
+            article = await Article.find({})
+                .sort({ createdDate: 'desc' })
+                .populate({
+                    path: 'createdBy',
+                    model: 'User'
+                })
+                .limit(args.pageSize);
+        } else {
+            const skips = args.pageSize * (arge.pageNum - 1);
+            article = await Article.find({})
+                .sort({ createdDate: 'desc' })
+                .populate({
+                    path: 'createdBy',
+                    model: 'User'
+                })
+                .skip(skips)
+                .limit(args.pageSize);
+        }
+        const total = await Article.countDocuments();
+        const hasMore = total > args.pageSize * args.pageNum;
+        return { article, hasMore };
     }
 };
 
