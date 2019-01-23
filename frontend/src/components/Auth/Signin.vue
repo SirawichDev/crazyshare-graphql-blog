@@ -251,10 +251,6 @@ h3 {
   border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/*--------------------
-Form
----------------------*/
-
 a {
   text-decoration: none;
 }
