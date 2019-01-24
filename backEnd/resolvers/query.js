@@ -32,7 +32,7 @@ const Query = {
                 })
                 .limit(args.pageSize);
         } else {
-            const skips = args.pageSize * (arge.pageNum - 1);
+            const skips = args.pageSize * (args.pageNum - 1);
             article = await Article.find({})
                 .sort({ createdDate: 'desc' })
                 .populate({
