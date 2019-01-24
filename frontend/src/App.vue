@@ -165,13 +165,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Home from "./components/Home";
 
 export default {
   name: "App",
-  components: {
-    Home
-  },
   data() {
     return {
       authErrorSnackbar: false,
@@ -180,11 +176,10 @@ export default {
     };
   },
   watch: {
-    user(newvalue, oldvalue) {
+    user(newvalue) {
       if (newvalue) {
         this.snackbar = true;
       }
-      console.log("🦙 oldvalue", oldvalue);
     },
     authError(value) {
       if (value !== null) {
