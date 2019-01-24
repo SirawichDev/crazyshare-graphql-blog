@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import Home from './components/Home';
 import SignIn from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
-import Article from './components/Articles/AddArticle';
+import AddArticle from './components/Articles/AddArticle';
+import ArticleList from './components/Articles/ArticleList';
 Vue.use(Router);
 
 export default new Router({
@@ -26,8 +27,13 @@ export default new Router({
         },
         {
             path: '/article/add',
-            name: 'article',
-            component: Article
+            name: 'add_article',
+            component: AddArticle
+        },
+        {
+            path: '/article',
+            name: 'articles',
+            component: ArticleList
         }
     ]
 });
