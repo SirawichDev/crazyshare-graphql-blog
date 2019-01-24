@@ -26,3 +26,28 @@ export const GET_CURRENT_USER = gql`
         }
     }
 `;
+
+export const INFINITE_SCOLL = gql`
+    query($pageNum: Int!, $pageSize: Int!) {
+        infiniteScrollArticle(pageNum: $pageNum, pageSize: $pageSize) {
+            articles {
+                _id
+                title
+                imageUrl
+                kind
+                description
+                trumbs_up
+                createdBy {
+                    _id
+                    username
+                    avatar
+                }
+                createDate
+                messages {
+                    _id
+                }
+            }
+            hasMore
+        }
+    }
+`;
