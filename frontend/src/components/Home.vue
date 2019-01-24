@@ -14,6 +14,7 @@
                 v-for="article in articles"
                 :key="article._id"
                 :src="article.imageUrl"
+                @click.native="targetArticle(article._id)"
               >
                 <div class="text-container">
                   <h1 class="title">{{article.title}}</h1>
@@ -43,6 +44,9 @@ export default {
   methods: {
     getArticleSlide() {
       this.$store.dispatch("getArticle");
+    },
+    targetArticle(id){
+      this.$router.push(`article/${id}`);
     }
   }
 };
