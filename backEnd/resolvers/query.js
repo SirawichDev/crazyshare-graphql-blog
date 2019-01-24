@@ -25,7 +25,7 @@ const Query = {
         let articles;
         if (pageNum === 1) {
             articles = await Article.find({})
-                .sort({ createdDate: 'd esc' })
+                .sort({ createdDate: 'desc' })
                 .populate({
                     path: 'createdBy',
                     model: 'User'
