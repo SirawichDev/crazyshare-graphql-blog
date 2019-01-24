@@ -13,7 +13,7 @@ type Article{
     imageUrl: String
     kind: [String]
     description: String!
-    createDate: String
+    createdDate: String
     trumbs_up: Int
     createdBy: User!
     messages: [Message]
