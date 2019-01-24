@@ -21,30 +21,31 @@ const Query = {
         const user = await User.find({}).sort({ joinDate: 'desc' });
         return user;
     },
-    infiniteScrollArticle: async (_, args, { Article }) => {
-        let article;
-        if (args.pageNum === 1) {
-            article = await Article.find({})
-                .sort({ createdDate: 'desc' })
+    infiniteScrollArticle: async (_, { pageNum, pageSize }, { Article }) => {
+        let articles;
+        if (pageNum === 1) {
+            articles = await Article.find({})
+                .sort({ createdDate: 'd esc' })
                 .populate({
                     path: 'createdBy',
                     model: 'User'
                 })
-                .limit(args.pageSize);
+                .limit(pageSize);
         } else {
-            const skips = args.pageSize * (args.pageNum - 1);
-            article = await Article.find({})
+            const skips = pageSize * (pageNum - 1);
+            articles = await Article.find({})
                 .sort({ createdDate: 'desc' })
                 .populate({
                     path: 'createdBy',
                     model: 'User'
                 })
                 .skip(skips)
-                .limit(args.pageSize);
+                .limit(pageSize);
         }
+        console.log(articles);
         const total = await Article.countDocuments();
-        const hasMore = total > args.pageSize * args.pageNum;
-        return { article, hasMore };
+        const hasMore = total > pageSize * pageNum;
+        return { articles, hasMore };
     }
 };
 
