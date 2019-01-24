@@ -30,6 +30,7 @@ export const GET_CURRENT_USER = gql`
 export const INFINITE_SCOLL = gql`
     query($pageNum: Int!, $pageSize: Int!) {
         infiniteScrollArticle(pageNum: $pageNum, pageSize: $pageSize) {
+            hasMore
             articles {
                 _id
                 title
@@ -42,12 +43,8 @@ export const INFINITE_SCOLL = gql`
                     username
                     avatar
                 }
-                createDate
-                messages {
-                    _id
-                }
+                createdDate
             }
-            hasMore
         }
     }
 `;
