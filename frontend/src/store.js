@@ -115,12 +115,11 @@ export default new Vuex.Store({
                     variables: payload,
                     update: (cache, { data: { createArticle } }) => {
                         console.log('cache' + cache, 'data' + data);
-                        const data = cache.readQuery({ query: GET_ARTICLE });
-                        data.getArticle.unshift(createArticle);
-                        console.log('data.getArticle', data.getArticle);
+                        const datas = cache.readQuery({ query: GET_ARTICLE });
+                        datas.getArticle.unshift(createArticle);
+                        console.log('data.getArticle', datas.getArticle);
                         cache.writeQuery({
-                            query: GET_ARTICLE,
-                            data
+                            query: GET_ARTICLE
                         });
                     }
                 })
