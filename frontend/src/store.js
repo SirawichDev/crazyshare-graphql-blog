@@ -114,7 +114,6 @@ export default new Vuex.Store({
                     mutation: ADD_ARTICLE,
                     variables: payload,
                     update: (cache, { data: { createArticle } }) => {
-                        console.log('cache' + cache, 'data' + data);
                         const datas = cache.readQuery({ query: GET_ARTICLE });
                         datas.getArticle.unshift(createArticle);
                         console.log('data.getArticle', datas.getArticle);
