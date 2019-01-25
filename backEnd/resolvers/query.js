@@ -47,11 +47,11 @@ const Query = {
         const hasMore = total > pageSize * pageNum;
         return { articles, hasMore };
     },
-    getSingleArticle: async(_, {articleId},{Article},_) => {
-        const article = await Article.findOne({_id: articleId}).populate({
+    getSingleArticle: async (_, { articleId }, { Article }) => {
+        const article = await Article.findOne({ _id: articleId }).populate({
             path: 'messages.messageUser',
             mdoel: 'User'
-        })
+        });
         return article;
     }
 };
