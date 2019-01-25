@@ -106,8 +106,8 @@ export default {
           pageSize
         },
         updateQuery: (prev, { fetchMoreResult }) => {
-          console.log("prevResult", prev);
-          console.log("fetchMoreResult", fetchMoreResult);
+          // console.log("prevResult", prev);
+          // console.log("fetchMoreResult", fetchMoreResult);
           const newArticle = fetchMoreResult.infiniteScrollArticle.articles;
           const hasMore = fetchMoreResult.infiniteScrollArticle.hasMore;
           this.showMoreEnable = hasMore;
