@@ -15,14 +15,10 @@ export const GET_SINGLE_ARTICLE = gql`
         getSingleArticle(articleId: $articleId) {
             _id
             title
+            kind
             description
             imageUrl
             trumbs_up
-            createdBy {
-                _id
-                username
-                avatar
-            }
             messages {
                 _id
                 messageDetail
