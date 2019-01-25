@@ -10,7 +10,32 @@ export const GET_ARTICLE = gql`
         }
     }
 `;
-
+export const GET_SINGLE_ARTICLE = gql`
+    query($articleId: ID!) {
+        getSingleArticle(articleId: $articleId) {
+            _id
+            title
+            description
+            imageUrl
+            trumbs_up
+            createdBy {
+                _id
+                username
+                avatar
+            }
+            messages {
+                _id
+                messageDetail
+                messageDate
+                messageUser {
+                    _id
+                    username
+                    avatar
+                }
+            }
+        }
+    }
+`;
 export const GET_CURRENT_USER = gql`
     query {
         currentUser {
