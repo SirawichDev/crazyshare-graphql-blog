@@ -33,8 +33,8 @@ export default new Router({
             props: true
         },
         {
-            path: '/article/add',
-            name: 'add_article',
+            path: '/articles/create',
+            name: 'AddArticle',
             component: AddArticle
         },
         {
