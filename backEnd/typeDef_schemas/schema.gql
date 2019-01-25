@@ -25,7 +25,7 @@ type Message {
     _id: ID
     messageDetail: String!
     messageUser: User!
-    messageDate: String!
+    messageDate: String
 }
 type Mutation {
     signinUser(username:String!, password: String!): Token!
