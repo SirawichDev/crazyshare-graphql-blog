@@ -50,7 +50,7 @@ const Query = {
     getSingleArticle: async (_, { articleId }, { Article }) => {
         const article = await Article.findOne({ _id: articleId }).populate({
             path: 'messages.messageUser',
-            mdoel: 'User'
+            model: 'User'
         });
         return article;
     }
