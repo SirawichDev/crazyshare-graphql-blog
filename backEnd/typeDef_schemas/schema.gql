@@ -23,8 +23,9 @@ type Token {
 }
 type Message {
     _id: ID
-    messsageDetail: String!
+    messageDetail: String!
     messageUser: User!
+    messageDate: String!
 }
 type Mutation {
     signinUser(username:String!, password: String!): Token!
