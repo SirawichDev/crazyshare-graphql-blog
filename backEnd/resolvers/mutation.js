@@ -51,6 +51,21 @@ const Mutation = {
             createdBy
         }).save();
         return newArticle;
+    },
+    chat: async (_, { messageDetail, userId, articleId }, { Article }) => {
+        const newMessage = {
+            messageDetail,
+            messageUser: userId
+        };
+        const article_get = await Article.findOneAndUpdate(
+            { _id: articleId },
+            { $push: { messages: { $each: [newMessage], $position: 0 } } },
+            { new: true }
+        ).populate({
+            path: 'messages.messageUser',
+            model: 'User'
+        });
+        return article_get.messages[0];
     }
 };
 
