@@ -28,7 +28,7 @@ type Message {
     messageDate: String
 }
 type Thumbsup {
-    like: Int
+    trumbs_up: Int
     bookmarks: [Article]
 }
 type Mutation {
