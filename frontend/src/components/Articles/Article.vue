@@ -17,10 +17,13 @@
               <v-btn
                 large
                 icon
-                @click="likeArticle"
+                @click="toggleThumbup"
                 v-if="user"
               >
-                <v-icon large>favorite</v-icon>
+                <v-icon
+                  :color="checkIfThumbsup(getSingleArticle._id) ? 'red': 'black'"
+                  large
+                >favorite</v-icon>
               </v-btn>
               <h3 class="ml-1 font-weight-thin">{{getSingleArticle.trumbs_up}}</h3>
               <v-spacer></v-spacer>
@@ -132,7 +135,7 @@
 </template>
 <script>
 import { GET_SINGLE_ARTICLE } from "../../../query/queries";
-import { ADD_ARTICLE_MESSAGE, LIKE } from "../../../mutation/mutation";
+import { ADD_ARTICLE_MESSAGE, LIKE, DISLIKE } from "../../../mutation/mutation";
 import { mapGetters } from "vuex";
 export default {
   name: "Article",
@@ -140,13 +143,14 @@ export default {
   data() {
     return {
       bigImg: false,
+      thumbsuped: false,
       isFormValid: true,
       messageDetail: "",
       chatRules: [message => !!message || "Message is required"]
     };
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "onmybookmarks"])
   },
   apollo: {
     getSingleArticle: {
@@ -161,6 +165,25 @@ export default {
   methods: {
     prevPage() {
       this.$router.go(-1);
+    },
+    checkIfThumbsup(articleId) {
+      if (
+        this.onmybookmarks &&
+        this.onmybookmarks.some(bookmark => bookmark._id === articleId)
+      ) {
+        this.thumbsuped = true;
+        return true;
+      } else {
+        this.thumbsuped = false;
+        return false;
+      }
+    },
+    toggleThumbup() {
+      if (this.thumbsuped) {
+        this.dislikeArticle();
+      } else {
+        this.likeArticle();
+      }
     },
     likeArticle() {
       console.log(this.user);
@@ -177,10 +200,50 @@ export default {
               variables: { articleId: this.articleId }
             });
             data.getSingleArticle.trumbs_up += 1;
+            cache.writeQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: { articleId: this.articleId },
+              data
+            });
           }
         })
         .then(({ data }) => {
-          console.log(data.like);
+          const updateUser = { ...this.user, bookmarks: data.like.bookmarks };
+          this.$store.commit("setUser", updateUser);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    dislikeArticle() {
+      console.log(this.user);
+      this.$apollo
+        .mutate({
+          mutation: DISLIKE,
+          variables: {
+            username: this.user.username,
+            articleId: this.articleId
+          },
+          update: (cache, { data: { dislike } }) => {
+            const data = cache.readQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: { articleId: this.articleId }
+            });
+            data.getSingleArticle.trumbs_up -= 1;
+            cache.writeQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: { articleId: this.articleId },
+              data
+            });
+          }
+        })
+        .then(({ data }) => {
+          const updateUser = {
+            ...this.user,
+            bookmarks: data.dislike.bookmarks
+          };
+          this.$store.commit("setUser", updateUser);
+          console.log(this.user.bookmarks);
         })
         .catch(err => {
           console.log(err);
