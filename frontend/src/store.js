@@ -133,6 +133,7 @@ export default new Vuex.Store({
     getters: {
         articles: state => state.articles,
         loading: state => state.loading,
+        onmybookmarks: state => state.user && state.user.bookmarks,
         user: state => state.user,
         error: state => state.error,
         authError: state => state.authError
