@@ -62,7 +62,7 @@ export const ADD_ARTICLE_MESSAGE = gql`
 export const LIKE = gql`
     mutation($username: String!, $articleId: ID!) {
         like(username: $username, articleId: $articleId) {
-            like
+            trumbs_up
             bookmarks {
                 _id
                 title
@@ -75,7 +75,7 @@ export const LIKE = gql`
 export const DISLIKE = gql`
     mutation($username: String!, $articleId: ID!) {
         dislike(username: $username, articleId: $articleId) {
-            like
+            trumbs_up
             bookmarks {
                 _id
                 title
