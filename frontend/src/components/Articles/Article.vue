@@ -72,19 +72,24 @@
           v-if="user"
         >
           <v-flex xs12>
-            <v-form @submit.prevent="handleAddMessage">
+            <v-form
+              @submit.prevent="handleAddMessage"
+              v-model="isFormValid"
+              lazy-validation
+              ref="form"
+            >
               <v-layout row>
                 <v-text-field
                   clearable
                   v-model="messageDetail"
                   type="text"
-                  :append-outer-icon="!messageDetail"
+                  :append-outer-icon="messageDetail && 'send'"
                   required
+                  :rules="chatRules"
                   @click:append-outer="handleAddMessage"
                   color="primary"
                   prepend-icon="email"
                   label="ADD MESSAGE"
-                  append-icon="send"
                 ></v-text-field>
               </v-layout>
             </v-form>
@@ -134,7 +139,9 @@ export default {
   data() {
     return {
       bigImg: false,
-      messageDetail: ""
+      isFormValid: true,
+      messageDetail: "",
+      chatRules: [message => !!message || "Message is required"]
     };
   },
   computed: {
@@ -162,39 +169,42 @@ export default {
       }
     },
     handleAddMessage() {
-      this.$apollo
-        .mutate({
-          mutation: ADD_ARTICLE_MESSAGE,
-          variables: {
-            messageDetail: this.messageDetail,
-            userId: this.user._id,
-            articleId: this.articleId
-          },
-          update: (cache, { data: { chat } }) => {
-            const data = cache.readQuery({
-              query: GET_SINGLE_ARTICLE,
-              variables: {
-                articleId: this.articleId
-              }
-            });
-            // console.log('data', data);
-            // console.log('chat', chat);
-            data.getSingleArticle.messages.unshift(chat);
-            cache.writeQuery({
-              query: GET_SINGLE_ARTICLE,
-              variables: {
-                articleId: this.articleId
-              },
-              data
-            });
-          }
-        })
-        .then(({ data }) => {
-          console.log(data.chat);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (this.$refs.form.validate()) {
+        this.$apollo
+          .mutate({
+            mutation: ADD_ARTICLE_MESSAGE,
+            variables: {
+              messageDetail: this.messageDetail,
+              userId: this.user._id,
+              articleId: this.articleId
+            },
+            update: (cache, { data: { chat } }) => {
+              const data = cache.readQuery({
+                query: GET_SINGLE_ARTICLE,
+                variables: {
+                  articleId: this.articleId
+                }
+              });
+              // console.log('data', data);
+              // console.log('chat', chat);
+              data.getSingleArticle.messages.unshift(chat);
+              cache.writeQuery({
+                query: GET_SINGLE_ARTICLE,
+                variables: {
+                  articleId: this.articleId
+                },
+                data
+              });
+            }
+          })
+          .then(({ data }) => {
+            this.$refs.form.reset();
+            console.log(data.chat);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
 };
