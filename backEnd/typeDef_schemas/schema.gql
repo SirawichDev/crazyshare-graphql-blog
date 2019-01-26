@@ -30,7 +30,8 @@ type Message {
 type Mutation {
     signinUser(username:String!, password: String!): Token!
     signupUser(username:String!, email: String!,password: String!): Token!
-    createArticle(title: String!, imageUrl: String,kind: [String]!, description:String!,trumbs_up:Int,createdBy:ID!): Article!
+    createArticle(title: String!, imageUrl: String,kind: [String]! description:String!,trumbs_up:Int,createdBy:ID!): Article!
+    chat(messageDetail: String!, userId: String!, articleId: String!): Message!
 }
 type ArticlePage {
     articles: [Article]
