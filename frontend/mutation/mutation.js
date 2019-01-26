@@ -68,10 +68,6 @@ export const LIKE = gql`
                 title
                 imageUrl
                 description
-                createdBy {
-                    username
-                    avatar
-                }
             }
         }
     }
@@ -85,10 +81,6 @@ export const DISLIKE = gql`
                 title
                 imageUrl
                 description
-                createdBy {
-                    username
-                    avatar
-                }
             }
         }
     }
