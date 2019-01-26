@@ -17,6 +17,7 @@
               <v-btn
                 large
                 icon
+                @click="likeArticle"
                 v-if="user"
               >
                 <v-icon large>favorite</v-icon>
@@ -131,7 +132,7 @@
 </template>
 <script>
 import { GET_SINGLE_ARTICLE } from "../../../query/queries";
-import { ADD_ARTICLE_MESSAGE } from "../../../mutation/mutation";
+import { ADD_ARTICLE_MESSAGE, LIKE } from "../../../mutation/mutation";
 import { mapGetters } from "vuex";
 export default {
   name: "Article",
@@ -160,6 +161,23 @@ export default {
   methods: {
     prevPage() {
       this.$router.go(-1);
+    },
+    likeArticle() {
+      console.log(this.user);
+      this.$apollo
+        .mutate({
+          mutation: LIKE,
+          variables: {
+            username: this.user.username,
+            articleId: this.articleId
+          }
+        })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     toggleBigimg() {
       if (window.innerWidth > 500) {
