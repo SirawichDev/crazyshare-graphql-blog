@@ -95,7 +95,7 @@
               right
               color="blue darken-2"
             >
-              <span slot="badge">1</span>
+              <span slot="badge" v-if="onmybookmarks.length">{{onmybookmarks.length}}</span>
               <h3 id="title">Profile</h3>
             </v-badge>
           </v-btn>
@@ -188,7 +188,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user", "authError"]),
+    ...mapGetters(["user", "authError","onmybookmarks"]),
     eachItem() {
       let items = [
         { icon: "chat", title: "Articles", link: "/article" },
