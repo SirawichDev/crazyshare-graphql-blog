@@ -170,10 +170,17 @@ export default {
           variables: {
             username: this.user.username,
             articleId: this.articleId
+          },
+          update: (cache, { data: { like } }) => {
+            const data = cache.readQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: { articleId: this.articleId }
+            });
+            data.getSingleArticle.trumbs_up += 1;
           }
         })
         .then(({ data }) => {
-          console.log(data);
+          console.log(data.like);
         })
         .catch(err => {
           console.log(err);
