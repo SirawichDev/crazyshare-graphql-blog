@@ -28,7 +28,7 @@
             <v-tooltip right>
               <span>Click to show large image</span>
               <v-card-media
-              @click="toggleBigimg"
+                @click="toggleBigimg"
                 slot="activator"
                 :src="getSingleArticle.imageUrl"
               >
@@ -36,8 +36,7 @@
             </v-tooltip>
             <v-dialog
               v-model="bigImg"
-
-             height="80vh"
+              height="80vh"
               transition="dialog-transition"
             >
               <v-card>
@@ -67,60 +66,75 @@
         </v-flex>
       </v-layout>
       <div class="mt-3">
-      <v-layout row wrap v-if="user">
+        <v-layout
+          row
+          wrap
+          v-if="user"
+        >
           <v-flex xs12>
-              <v-form>
-                  <v-layout row>
-                      <v-text-field
-                         clearable
-                         type="text"
-                         required
-                         color="primary"
-                         prepend-icon="email"
-                         label="ADD MESSAGE"
-                         append-icon="send"
-                      ></v-text-field>
-                  </v-layout>
-              </v-form>
+            <v-form @submit.prevent="handleAddMessage">
+              <v-layout row>
+                <v-text-field
+                  clearable
+                  v-model="messageDetail"
+                  type="text"
+                  :append-outer-icon="!messageDetail"
+                  required
+                  @click:append-outer="handleAddMessage"
+                  color="primary"
+                  prepend-icon="email"
+                  label="ADD MESSAGE"
+                  append-icon="send"
+                ></v-text-field>
+              </v-layout>
+            </v-form>
           </v-flex>
-      </v-layout>
-      <v-layout row wrap>
+        </v-layout>
+        <v-layout
+          row
+          wrap
+        >
           <v-flex xs12>
-              <v-list subheader>
-                  <v-subheader>Message : {{getSingleArticle.messages.length}}</v-subheader>
-                  <template v-for="message in getSingleArticle.messages">
-                      <v-divider :key="message._id"></v-divider>
-                      <v-list-tile avatar :key="message.title">
-                          <v-list-tile-avatar>
-                              <img :src="message.messageUser.avatar">
-                          </v-list-tile-avatar>
-                          <v-list-tile-content>
-                              <v-list-tile-title>{{message.messageDetail}}</v-list-tile-title>
-                              <v-list-tile-sub-title>{{message.messageUser.username}}
-                                  <span>{{message.messageDate}}</span>
-                              </v-list-tile-sub-title>
-                          </v-list-tile-content>
-                          <v-list-tile-action>
-                              <v-icon color="grey">chat_bubble</v-icon>
-                          </v-list-tile-action>
-                      </v-list-tile>
-                  </template>
-              </v-list>
+            <v-list subheader>
+              <v-subheader>Message : {{getSingleArticle.messages.length}}</v-subheader>
+              <template v-for="message in getSingleArticle.messages">
+                <v-divider :key="message._id"></v-divider>
+                <v-list-tile
+                  avatar
+                  :key="message.title"
+                >
+                  <v-list-tile-avatar>
+                    <img :src="message.messageUser.avatar">
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{message.messageDetail}}</v-list-tile-title>
+                    <v-list-tile-sub-title>{{message.messageUser.username}}
+                      <span>{{message.messageDate.replace('GMT+0700 (Indochina Time)','')}}</span>
+                    </v-list-tile-sub-title>
+                  </v-list-tile-content>
+                  <v-list-tile-action>
+                    <v-icon color="grey">chat_bubble</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </template>
+            </v-list>
           </v-flex>
-      </v-layout>
+        </v-layout>
       </div>
     </v-container>
   </v-app>
 </template>
 <script>
 import { GET_SINGLE_ARTICLE } from "../../../query/queries";
+import { ADD_ARTICLE_MESSAGE } from "../../../mutation/mutation";
 import { mapGetters } from "vuex";
 export default {
   name: "Article",
   props: ["articleId"],
   data() {
     return {
-      bigImg: false
+      bigImg: false,
+      messageDetail: ""
     };
   },
   computed: {
@@ -137,16 +151,51 @@ export default {
     }
   },
   methods: {
-      prevPage(){
-          this.$router.go(-1);
-      },
-      toggleBigimg(){
-          if(window.innerWidth > 500) {
-              this.bigImg = !this.bigImg;
-          } else {
-              this.bigImg =false;
-          }
+    prevPage() {
+      this.$router.go(-1);
+    },
+    toggleBigimg() {
+      if (window.innerWidth > 500) {
+        this.bigImg = !this.bigImg;
+      } else {
+        this.bigImg = false;
       }
+    },
+    handleAddMessage() {
+      this.$apollo
+        .mutate({
+          mutation: ADD_ARTICLE_MESSAGE,
+          variables: {
+            messageDetail: this.messageDetail,
+            userId: this.user._id,
+            articleId: this.articleId
+          },
+          update: (cache, { data: { chat } }) => {
+            const data = cache.readQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: {
+                articleId: this.articleId
+              }
+            });
+            // console.log('data', data);
+            // console.log('chat', chat);
+            data.getSingleArticle.messages.unshift(chat);
+            cache.writeQuery({
+              query: GET_SINGLE_ARTICLE,
+              variables: {
+                articleId: this.articleId
+              },
+              data
+            });
+          }
+        })
+        .then(({ data }) => {
+          console.log(data.chat);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
