@@ -59,3 +59,37 @@ export const ADD_ARTICLE_MESSAGE = gql`
         }
     }
 `;
+export const LIKE = gql`
+    mutation($username: String!, $articleId: ID!) {
+        like(username: $username, articleId: $articleId) {
+            like
+            bookmarks {
+                _id
+                title
+                imageUrl
+                description
+                createdBy {
+                    username
+                    avatar
+                }
+            }
+        }
+    }
+`;
+export const DISLIKE = gql`
+    mutation($username: String!, $articleId: ID!) {
+        dislike(username: $username, articleId: $articleId) {
+            like
+            bookmarks {
+                _id
+                title
+                imageUrl
+                description
+                createdBy {
+                    username
+                    avatar
+                }
+            }
+        }
+    }
+`;
