@@ -66,6 +66,40 @@ const Mutation = {
             model: 'User'
         });
         return article_get.messages[0];
+    },
+    like: async (_, { username, articleId }, { Article, User }) => {
+        const article = await Article.findOneAndUpdate(
+            { _id: articleId },
+            { $inc: { trumbs_up: 1 } },
+            { new: true }
+        );
+        const user = await user
+            .findOneAndUpdate(
+                { username },
+                { $addToSet: { bookmarks: articleId } },
+                { new: true }
+            )
+            .populate({
+                path: 'bookmarks',
+                model: 'Article'
+            });
+        return { trumbs_up: article.trumbs_up, bookmarks: user.bookmarks };
+    },
+    dislike: async (_, { username, articleId }, { User, Article }) => {
+        const article = await Article.findOneAndUpdate(
+            { username },
+            { $inc: { trumbs_up: -1 } },
+            { new: true }
+        );
+        const user = await User.findOneAndUpdate(
+            { usernmae },
+            { $pull: { bookmarks: articleId } },
+            { new: true }
+        ).populate({
+            path: 'bookmarks',
+            model: 'Article'
+        });
+        return { trumbs_up: article.trumbs_up, bookmarks: user.bookmarks };
     }
 };
 
