@@ -73,16 +73,14 @@ const Mutation = {
             { $inc: { trumbs_up: 1 } },
             { new: true }
         );
-        const user = await user
-            .findOneAndUpdate(
-                { username },
-                { $addToSet: { bookmarks: articleId } },
-                { new: true }
-            )
-            .populate({
-                path: 'bookmarks',
-                model: 'Article'
-            });
+        const user = await User.findOneAndUpdate(
+            { username },
+            { $addToSet: { bookmarks: articleId } },
+            { new: true }
+        ).populate({
+            path: 'bookmarks',
+            model: 'Article'
+        });
         return { trumbs_up: article.trumbs_up, bookmarks: user.bookmarks };
     },
     dislike: async (_, { username, articleId }, { User, Article }) => {
