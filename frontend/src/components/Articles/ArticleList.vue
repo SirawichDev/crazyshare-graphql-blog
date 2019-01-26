@@ -73,7 +73,7 @@
       </div>
     </div>
   </div>
-  <v-btn color="success" @click="More">More Article!</v-btn>
+  <v-btn v-if="showMoreEnable" color="success" @click="More">More Article!</v-btn>
   </v-app>
 </template>
 
