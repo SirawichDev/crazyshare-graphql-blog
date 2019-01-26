@@ -1,7 +1,7 @@
 type User{
     _id: ID
-    username: String! @unique
-    email: String! @unique
+    username: String!
+    email: String!
     password: String!
     avatar: String
     joinDate: String
@@ -23,8 +23,9 @@ type Token {
 }
 type Message {
     _id: ID
-    messsageDetail: String!
+    messageDetail: String!
     messageUser: User!
+    messageDate: String
 }
 type Mutation {
     signinUser(username:String!, password: String!): Token!
@@ -38,6 +39,7 @@ type ArticlePage {
 type Query{
     currentUser: User
     getUser: [User]
+    getSingleArticle(articleId: ID!): Article!
     getArticle: [Article]
     infiniteScrollArticle(pageNum: Int!,pageSize: Int!): ArticlePage
 }

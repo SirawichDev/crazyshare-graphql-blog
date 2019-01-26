@@ -5,6 +5,7 @@ import SignIn from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
 import AddArticle from './components/Articles/AddArticle';
 import ArticleList from './components/Articles/ArticleList';
+import Article from './components/Articles/Article';
 Vue.use(Router);
 
 export default new Router({
@@ -26,8 +27,14 @@ export default new Router({
             component: Signup
         },
         {
-            path: '/article/add',
-            name: 'add_article',
+            path: '/article/:articleId',
+            name: 'Article',
+            component: Article,
+            props: true
+        },
+        {
+            path: '/articles/create',
+            name: 'AddArticle',
             component: AddArticle
         },
         {

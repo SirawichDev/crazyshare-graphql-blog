@@ -46,6 +46,13 @@ const Query = {
         const total = await Article.countDocuments();
         const hasMore = total > pageSize * pageNum;
         return { articles, hasMore };
+    },
+    getSingleArticle: async (_, { articleId }, { Article }) => {
+        const article = await Article.findOne({ _id: articleId }).populate({
+            path: 'messages.messageUser',
+            model: 'User'
+        });
+        return article;
     }
 };
 

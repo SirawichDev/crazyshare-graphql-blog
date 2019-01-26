@@ -211,7 +211,7 @@ export default {
       ];
       if (this.user) {
         items = [
-          { icon: "chat", title: "Create Article", link: "/article/add" },
+          { icon: "chat", title: "Create Article", link: "/articles/create" },
           { icon: "whatshot", title: "U Profile", link: "/profile" },
           { icon: "polymer", title: "Logout", link: "/logout" }
         ];

@@ -63,7 +63,7 @@
           </div>
           <div class="mr-grid action-row">
             <div class="col2">
-              <div class="watch-btn">
+              <div    @click="targetArticle(article._id)" class="watch-btn">
                 <h3>Read More</h3>
               </div>
             </div>
@@ -106,8 +106,8 @@ export default {
           pageSize
         },
         updateQuery: (prev, { fetchMoreResult }) => {
-          console.log("prevResult", prev);
-          console.log("fetchMoreResult", fetchMoreResult);
+          // console.log("prevResult", prev);
+          // console.log("fetchMoreResult", fetchMoreResult);
           const newArticle = fetchMoreResult.infiniteScrollArticle.articles;
           const hasMore = fetchMoreResult.infiniteScrollArticle.hasMore;
           this.showMoreEnable = hasMore;
@@ -120,6 +120,9 @@ export default {
           };
         }
       });
+    },
+    targetArticle(id){
+      this.$router.push(`article/${id}`);
     }
   }
 };
