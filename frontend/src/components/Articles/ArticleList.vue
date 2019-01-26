@@ -1,79 +1,85 @@
 <template>
-<v-app>
+  <v-app>
 
-
-  <div class="containers">
-    <div
-      class="cellphone-container"
-      v-for="article in infiniteScrollArticle.articles"
-      :key="article._id"
-    >
-      <div class="movie">
-        <div class="menu"><i class="material-icons"></i></div>
-        <img
-          class="movie-img"
-          :src="article.imageUrl"
-        >
-        <div class="text-movie-cont">
-          <div class="mr-grid">
-            <div class="col1">
-              <h1>{{article.title}}</h1>
-              <ul
-                class="movie-gen"
-                v-for="type in article.kind"
-                :key="type._id"
-              >
-                <li>{{type}}</li>
-              </ul>
-            </div>
-          </div>
-          <div class="mr-grid summary-row">
-            <div class="col2">
-              <h5>Description</h5>
-            </div>
-            <div class="col2">
-              <ul class="movie-likes">
-                <li>
-                  <v-icon
-                    size="20px"
-                    color="primary"
-                  >favorite_border</v-icon>{{article.trumbs_up}}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="mr-grid">
-            <div class="col1">
-              <p class="movie-description">{{article.description}}</p>
-            </div>
-          </div>
-          <div class="mr-grid actors-row">
-            <div class="col1">
-              <p class="movie-actors"> Created By : <v-avatar
-                  :title="asds"
-                  color="primary"
-                  :size="20"
+    <div class="containers">
+      <div
+        class="cellphone-container"
+        v-for="article in infiniteScrollArticle.articles"
+        :key="article._id"
+      >
+        <div class="movie">
+          <div class="menu"><i class="material-icons"></i></div>
+          <img
+            class="movie-img"
+            :src="article.imageUrl"
+          >
+          <div class="text-movie-cont">
+            <div class="mr-grid">
+              <div class="col1">
+                <h1>{{article.title}}</h1>
+                <ul
+                  class="movie-gen"
+                  v-for="type in article.kind"
+                  :key="type._id"
                 >
-                  <img :src="article.createdBy.avatar">
-                </v-avatar>
-                {{article.createdBy.username}}
-
-              </p>
-            </div>
-          </div>
-          <div class="mr-grid action-row">
-            <div class="col2">
-              <div    @click="targetArticle(article._id)" class="watch-btn">
-                <h3>Read More</h3>
+                  <li>{{type}}</li>
+                </ul>
               </div>
             </div>
+            <div class="mr-grid summary-row">
+              <div class="col2">
+                <h5>Description</h5>
+              </div>
+              <div class="col2">
+                <ul class="movie-likes">
+                  <li>
+                    <v-icon
+                      size="20px"
+                      color="primary"
+                    >favorite_border</v-icon>{{article.trumbs_up}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mr-grid">
+              <div class="col1">
+                <p class="movie-description">{{article.description}}</p>
+              </div>
+            </div>
+            <div class="mr-grid actors-row">
+              <div class="col1">
+                <p class="movie-actors"> Created By : <v-avatar
+                    :title="asds"
+                    color="primary"
+                    :size="20"
+                  >
+                    <img :src="article.createdBy.avatar">
+                  </v-avatar>
+                  {{article.createdBy.username}}
 
+                </p>
+              </div>
+            </div>
+            <div class="mr-grid action-row">
+              <div class="col2">
+                <div
+                  @click="targetArticle(article._id)"
+                  class="watch-btn"
+                >
+                  <h3>Read More</h3>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <v-btn v-if="showMoreEnable" color="success" @click="More">More Article!</v-btn>
+    <v-btn
+      v-if="showMoreEnable"
+      color="success"
+      @click="More"
+    >More Article!</v-btn>
   </v-app>
 </template>
 
@@ -121,7 +127,7 @@ export default {
         }
       });
     },
-    targetArticle(id){
+    targetArticle(id) {
       this.$router.push(`article/${id}`);
     }
   }
@@ -136,8 +142,8 @@ body {
 }
 
 .containers {
-    display: flex;
-      flex-flow: row wrap;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .cellphone-container {
