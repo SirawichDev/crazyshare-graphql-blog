@@ -90,7 +90,7 @@ const Mutation = {
             { new: true }
         );
         const user = await User.findOneAndUpdate(
-            { usernmae },
+            { username },
             { $pull: { bookmarks: articleId } },
             { new: true }
         ).populate({
