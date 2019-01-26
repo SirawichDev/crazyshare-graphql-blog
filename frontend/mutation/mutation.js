@@ -40,3 +40,48 @@ export const ADD_ARTICLE = gql`
         }
     }
 `;
+
+export const ADD_ARTICLE_MESSAGE = gql`
+    mutation($messageDetail: String!, $userId: ID!, $articleId: ID!) {
+        chat(
+            messageDetail: $messageDetail
+            userId: $userId
+            articleId: $articleId
+        ) {
+            _id
+            messageDetail
+            messageUser {
+                _id
+                username
+                avatar
+            }
+            messageDate
+        }
+    }
+`;
+export const LIKE = gql`
+    mutation($username: String!, $articleId: ID!) {
+        like(username: $username, articleId: $articleId) {
+            trumbs_up
+            bookmarks {
+                _id
+                title
+                imageUrl
+                description
+            }
+        }
+    }
+`;
+export const DISLIKE = gql`
+    mutation($username: String!, $articleId: ID!) {
+        dislike(username: $username, articleId: $articleId) {
+            trumbs_up
+            bookmarks {
+                _id
+                title
+                imageUrl
+                description
+            }
+        }
+    }
+`;
