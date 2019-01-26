@@ -69,22 +69,3 @@ export const INFINITE_SCOLL = gql`
         }
     }
 `;
-
-export const ADD_ARTICLE_MESSAGE = gql`
-    mutation($messageDetail: String!, $userId: ID!, $articleId: ID!) {
-        chat(
-            messageDetail: $messageDetail
-            userId: $userId
-            articleId: $articleId
-        ) {
-            _id
-            messageDetail
-            messageUser {
-                _id
-                username
-                avatar
-            }
-            messageDate
-        }
-    }
-`;
