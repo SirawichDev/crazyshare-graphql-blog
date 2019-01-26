@@ -85,7 +85,7 @@ const Mutation = {
     },
     dislike: async (_, { username, articleId }, { User, Article }) => {
         const article = await Article.findOneAndUpdate(
-            { username },
+            { _id: articleId },
             { $inc: { trumbs_up: -1 } },
             { new: true }
         );
