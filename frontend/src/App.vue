@@ -74,11 +74,37 @@
         <v-spacer></v-spacer>
         <v-text-field
           flex
+          v-model="searchSentense"
+          @input="searchingArticle"
+          hide-details
           label="Search"
           class="search"
-          prepend-inner-icon="search"
           solo-inverted
+          prepend-inner-icon="search"
         ></v-text-field>
+          <v-card
+
+            id="search__result"
+            v-if="searchResult.length"
+          >
+            <v-list>
+              <v-list-tile
+
+                v-for="search in searchResult"
+                :key="search._id"
+              >
+                <v-list-tile-title> {{search.title}}
+                  <v-list-tile-avatar>
+                    <img :src="search.imageUrl">
+                  </v-list-tile-avatar>
+                  <span
+                    color="white"
+                    class="font-weight-thin"
+                  >{{search.description}}</span>
+                </v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-card>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
           <v-btn
@@ -95,7 +121,10 @@
               right
               color="blue darken-2"
             >
-              <span slot="badge" v-if="onmybookmarks.length">{{onmybookmarks.length}}</span>
+              <span
+                slot="badge"
+                v-if="onmybookmarks.length"
+              >{{onmybookmarks.length}}</span>
               <h3 id="title">Profile</h3>
             </v-badge>
           </v-btn>
@@ -140,16 +169,14 @@
       >Got It</v-btn>
     </v-snackbar>
     <v-snackbar
-            v-if="authError"
+      v-if="authError"
       v-model="authErrorSnackbar"
       color="red"
       :timeout="5000"
       bottom
       left
     >
-      <v-icon
-        color="white"
-      >spellcheck</v-icon>
+      <v-icon color="white">spellcheck</v-icon>
       {{authError.message}}
       <v-btn
         class="gotit"
@@ -172,7 +199,8 @@ export default {
     return {
       authErrorSnackbar: false,
       sideNav: false,
-      snackbar: false
+      snackbar: false,
+      searchSentense: ""
     };
   },
   watch: {
@@ -188,7 +216,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["user", "authError","onmybookmarks"]),
+    ...mapGetters(["user", "authError", "onmybookmarks", "searchResult"]),
     eachItem() {
       let items = [
         { icon: "chat", title: "Articles", link: "/article" },
@@ -229,6 +257,11 @@ export default {
   methods: {
     toggle() {
       this.sideNav = !this.sideNav;
+    },
+    searchingArticle() {
+      this.$store.dispatch("searchArticle", {
+        searchSentense: this.searchSentense
+      });
     }
   }
 };
@@ -236,30 +269,22 @@ export default {
 
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Concert+One");
-.nav {
-  border-radius: 2em;
-  clip-path: polygon(
-    0% 15%,
-    15% 15%,
-    15% 0%,
-    85% 0%,
-    85% 15%,
-    100% 15%,
-    100% 85%,
-    85% 85%,
-    85% 100%,
-    15% 100%,
-    15% 85%,
-    0% 85%
-  );
-}
 #title {
   font-family: "Concert One", cursive !important;
   color: black;
   font-weight: 900;
 }
+.search {
+  background-color: #444;
+}
+#search__result {
+  position: absolute;
+  width: 100vw;
+  height: auto;
+  top: 100%;
+  left: 0%;
+}
 .sidenav {
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
 }
 .title {
   text-align: center;
