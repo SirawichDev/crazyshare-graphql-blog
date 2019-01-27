@@ -53,6 +53,20 @@ const Query = {
             model: 'User'
         });
         return article;
+    },
+    searchArticle: async (_, { searchSentense }, { Article }) => {
+        if (searchSentense) {
+            const searchResult = await Article.find(
+                { $text: { $search: searchSentense } },
+                { score: { $meta: 'textScore' } }
+            )
+                .sort({
+                    score: { $meta: 'textScore' },
+                    trubms_up: 'desc'
+                })
+                .limit(5);
+            return searchResult;
+        }
     }
 };
 
