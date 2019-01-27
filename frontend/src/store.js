@@ -2,9 +2,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
-import { GET_ARTICLE, GET_CURRENT_USER } from '../query/queries';
+import { GET_ARTICLE, GET_CURRENT_USER, SEARCHING } from '../query/queries';
 import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
 import router from './router';
+import { ApolloCache } from 'apollo-cache';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,11 +14,18 @@ export default new Vuex.Store({
         user: null,
         loading: false,
         error: null,
+        searchResult: [],
         authError: null
     },
     mutations: {
         initArticle: (state, payload) => {
             state.articles = payload;
+        },
+        searchResult: (state, payload) => {
+            if (payload !== null) {
+                state.searchResult = payload;
+            }
+            console.log('x');
         },
         loading: (state, payload) => {
             state.loading = payload;
@@ -101,6 +109,20 @@ export default new Vuex.Store({
                     commit('error', err);
                 });
         },
+        searchArticle: ({ commit }, payload) => {
+            client
+                .query({
+                    query: SEARCHING,
+                    variables: payload
+                })
+                .then(({ data }) => {
+                    console.log(data.searchArticle);
+                    commit('searchResult', data.searchArticle);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
         signoutUser: async ({ commit }) => {
             commit('signout');
             localStorage.setItem('token', '');
@@ -133,6 +155,7 @@ export default new Vuex.Store({
     getters: {
         articles: state => state.articles,
         loading: state => state.loading,
+        searchResult: state => state.searchResult,
         onmybookmarks: state => state.user && state.user.bookmarks,
         user: state => state.user,
         error: state => state.error,
