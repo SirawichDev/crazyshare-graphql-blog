@@ -45,6 +45,7 @@ type ArticlePage {
 }
 type Query{
     currentUser: User
+    searchArticle(searchSentense: String!): [Article]
     getUser: [User]
     getSingleArticle(articleId: ID!): Article!
     getArticle: [Article]
