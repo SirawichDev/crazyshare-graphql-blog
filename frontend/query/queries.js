@@ -69,3 +69,15 @@ export const INFINITE_SCOLL = gql`
         }
     }
 `;
+
+export const SEARCHING = gql`
+    query($searchSentense: String!) {
+        searchArticle(searchSentense: $searchSentense) {
+            _id
+            title
+            imageUrl
+            description
+            trumbs_up
+        }
+    }
+`;
