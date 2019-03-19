@@ -56,9 +56,13 @@
                   name="name"
                   :rules="imageRules"
                   label="imageURL"
+                  @click="pickFile"
                   v-model="imageURL"
+                  accept="image/*" @change="onfilePicked"
                   id="id"
+                  ref="image"
                 ></v-text-field>
+
               </v-flex>
             </v-layout>
             <v-layout row>
@@ -132,6 +136,23 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
+    pickFile () {
+      this.$ref.image.click()
+    },
+    onFilePicked(e){
+      const file = e.target.files
+      if(file[0] !== undefined){
+        this.imageUrl = file[0].name
+        if(this.imageUrl.lastIndexOf('.') <= 0 ){
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(file[0]);
+        fr.addEventListener('load',() => {
+          this.imageUrl = fr.result;
+        })
+      }
+    },
     handleAddArticle() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch("createArticle", {
