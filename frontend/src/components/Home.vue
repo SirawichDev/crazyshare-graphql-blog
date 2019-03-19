@@ -3,7 +3,7 @@
 
     <v-container mt-5>
       <v-flex xs12>
-        <div v-if="loading">--Loadin--</div>
+        <div v-if="loading"><loader></loader></div>
         <v-container v-else >
           <v-flex >
             <v-carousel id="carousel"
@@ -30,8 +30,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import Loader from '../components/Loader/Loader.vue';
 export default {
   name: "home",
+  components:{
+    Loader
+  },
   created() {
     this.getArticleSlide();
   },
