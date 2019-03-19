@@ -1,0 +1,17 @@
+{
+    "name": "CrazyDevShare",
+    "type": "static",
+    "static":{
+        "public":"dist",
+        "rewrites": [
+            {
+                "source" : "**",
+                "destination":"/index.html"
+            }
+        ]
+    },
+    "alias": "CrazyDevShare",
+    "files": [
+        "dist"
+    ]
+}

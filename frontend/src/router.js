@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './components/Home';
 import SignIn from './components/Auth/Signin';
+import Profile from './components/Auth/Profile';
 import Signup from './components/Auth/Signup';
 import AddArticle from './components/Articles/AddArticle';
 import ArticleList from './components/Articles/ArticleList';
@@ -10,6 +11,7 @@ Vue.use(Router);
 
 export default new Router({
     mode: 'history',
+    // base: process.env.BASE_URL,
     routes: [
         {
             path: '/',
@@ -20,6 +22,11 @@ export default new Router({
             path: '/signin',
             name: 'signin',
             component: SignIn
+        },
+        {
+            path: '/profile',
+            name: 'Profile',
+            component: Profile
         },
         {
             path: '/signup',

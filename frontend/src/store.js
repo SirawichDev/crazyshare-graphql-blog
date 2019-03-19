@@ -5,7 +5,7 @@ import { client } from './main';
 import { GET_ARTICLE, GET_CURRENT_USER, SEARCHING } from '../query/queries';
 import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
 import router from './router';
-import { ApolloCache } from 'apollo-cache';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -33,17 +33,22 @@ export default new Vuex.Store({
         setUser: (state, payload) => {
             state.user = payload;
         },
-        error: (state, payload) => {
-            state.error = payload;
-        },
         clearUser: state => {
             state.user = null;
         },
+        error: (state, payload) => {
+            state.error = payload;
+        },
+
         reAuth: (state, payload) => {
             state.authError = payload;
         },
         signout: state => {
             state.user = null;
+        },
+        clearSearchTab: state => {
+            console.log('xx');
+            state.searchResult = [];
         }
     },
     actions: {
@@ -54,10 +59,12 @@ export default new Vuex.Store({
                     query: GET_CURRENT_USER
                 })
                 .then(({ data }) => {
+                    commit('loading', false);
                     console.log(data);
                     commit('setUser', data.currentUser);
                 })
                 .catch(err => {
+                    commit('loading', false);
                     console.error(err);
                 });
         },
@@ -124,7 +131,7 @@ export default new Vuex.Store({
                 });
         },
         signoutUser: async ({ commit }) => {
-            commit('signout');
+            commit('clearUser');
             localStorage.setItem('token', '');
             await client.resetStore();
             router.push('/');
