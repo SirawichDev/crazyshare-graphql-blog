@@ -49,5 +49,6 @@ type Query{
     getUser: [User]
     getSingleArticle(articleId: ID!): Article!
     getArticle: [Article]
+    getUserArticle(userId: ID!) : [Article]
     infiniteScrollArticle(pageNum: Int!,pageSize: Int!): ArticlePage
 }
