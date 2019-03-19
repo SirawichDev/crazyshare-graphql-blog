@@ -84,7 +84,7 @@
         </div>
       </div>
     </div>
-        <error
+    <error
       v-if="error"
       :message="error.message"
     >
@@ -104,19 +104,25 @@ export default {
       email: "",
       password: "",
       passwordvalidate: "",
-      usernameRules: [username => !!username || "username is required"],
-      passwordRules: [password => !!password || "password is required"],
+      usernameRules: [username => !!username || "username is required",
+              username => username.length > 5 || "username must more than 5 charactor"],
+      passwordRules: [
+        password => !!password || "passoword is required",
+        password => password.length > 5 || "password must more than 5 charactor"
+      ],
       emailRules: [email => !!email || "email is required"],
       passwordValidate: [
         passwordvalidate =>
           !!passwordvalidate || "confirm password validate is required ",
         passwordvalidate =>
-          passwordvalidate == this.password || "confirm password must match"
+          passwordvalidate == this.password || "confirm password must match",
+        passwordvalidate =>
+          passwordvalidate.length > 5 || "confirm password must more than 5 charactor"
       ]
     };
   },
   computed: {
-    ...mapGetters(["user","error"])
+    ...mapGetters(["user", "error"])
   },
   watch: {
     user(value) {
