@@ -82,3 +82,17 @@ export const SEARCHING = gql`
         }
     }
 `;
+
+export const GET_USER_ARTICLE = gql`
+    query($userId: ID!) {
+        getUserArticle(userId: $userId) {
+            _id
+            title
+            imageUrl
+            description
+            kind
+            trumbs_up
+            createdDate
+        }
+    }
+`;
