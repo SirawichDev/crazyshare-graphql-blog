@@ -2,7 +2,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { client } from './main';
-import { GET_ARTICLE, GET_CURRENT_USER, SEARCHING } from '../query/queries';
+import {
+    GET_ARTICLE,
+    GET_CURRENT_USER,
+    SEARCHING,
+    GET_USER_ARTICLE
+} from '../query/queries';
 import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
 import router from './router';
 
@@ -15,7 +20,8 @@ export default new Vuex.Store({
         loading: false,
         error: null,
         searchResult: [],
-        authError: null
+        authError: null,
+        userArticles: []
     },
     mutations: {
         initArticle: (state, payload) => {
@@ -49,6 +55,9 @@ export default new Vuex.Store({
         clearSearchTab: state => {
             console.log('xx');
             state.searchResult = [];
+        },
+        setUserArticle: (state, payload) => {
+            state.userArticles = payload;
         }
     },
     actions: {
@@ -68,6 +77,24 @@ export default new Vuex.Store({
                     console.error(err);
                 });
         },
+        getUserArticle: ({ commit }, payload) => {
+            commit('loading', true);
+            console.log('ds');
+            client
+                .query({
+                    query: GET_USER_ARTICLE,
+                    variables: payload
+                })
+                .then(({ data }) => {
+                    commit('setUserArticle', data.getUserArticle);
+                    commit('loading', false);
+                    console.log(data);
+                })
+                .catch(err => {
+                    commit('loading', false);
+                    console.error(err);
+                });
+        },
         getArticle: ({ commit }) => {
             commit('loading', true);
             client
@@ -77,7 +104,6 @@ export default new Vuex.Store({
                 .then(({ data }) => {
                     commit('loading', false);
                     commit('initArticle', data.getArticle);
-                    console.log('🍕 Store.getAricle', data.getArticle);
                 })
                 .catch(err => {
                     console.log('🦂 got Error', err);
@@ -162,6 +188,7 @@ export default new Vuex.Store({
     getters: {
         articles: state => state.articles,
         loading: state => state.loading,
+        userArticles: state => state.userArticles,
         searchResult: state => state.searchResult,
         onmybookmarks: state => state.user && state.user.bookmarks,
         user: state => state.user,
