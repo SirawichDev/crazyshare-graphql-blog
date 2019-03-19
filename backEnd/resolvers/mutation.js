@@ -98,6 +98,28 @@ const Mutation = {
             model: 'Article'
         });
         return { trumbs_up: article.trumbs_up, bookmarks: user.bookmarks };
+    },
+    updateUserArticle: async (
+        _,
+        { articleId, userId, title, description, imageUrl, kind },
+        { Article }
+    ) => {
+        const article = await Article.findOneAndUpdate(
+            {
+                _id: articleId,
+                createdBy: userId
+            },
+            {
+                $set: {
+                    title: title,
+                    description: description,
+                    imageUrl: imageUrl,
+                    kind: kind
+                }
+            },
+            { new: true }
+        );
+        return article;
     }
 };
 
