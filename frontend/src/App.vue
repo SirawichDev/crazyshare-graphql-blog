@@ -108,7 +108,7 @@
         <v-toolbar-items class="hidden-xs-only">
           <v-btn
             flat
-            to="/profile"
+           @click="goProfile"
             v-if="user"
           >
             <v-icon
@@ -221,7 +221,11 @@ export default {
     };
   },
   watch: {
-
+    // user(newvalue) {
+    //   if (newvalue) {
+    //     this.snackbar = true;
+    //   }
+    // },
     authError(value) {
       if (value !== null) {
         this.authErrorSnackbar = true;
@@ -282,6 +286,9 @@ export default {
       this.$store.dispatch("searchArticle", {
         searchSentense: this.searchSentense
       });
+    },
+    goProfile(){
+      this.$router.push('/profile');
     }
   }
 };
