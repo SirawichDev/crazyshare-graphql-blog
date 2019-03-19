@@ -28,6 +28,7 @@ export default new Router({
             name: 'Profile',
             component: Profile
         },
+
         {
             path: '/signup',
             name: 'signup',
