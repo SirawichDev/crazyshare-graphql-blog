@@ -33,7 +33,7 @@ export const client = new ApolloClient({
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
                 console.log('graph Error', err);
-                if (err.name === 'ReferenceError') {
+                if (err.name === 'AuthenticationError') {
                     store.commit('reAuth', err);
                     store.dispatch('signoutUser');
                 }
