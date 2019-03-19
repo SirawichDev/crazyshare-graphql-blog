@@ -42,7 +42,6 @@ const Query = {
                 .skip(skips)
                 .limit(pageSize);
         }
-        console.log(articles);
         const total = await Article.countDocuments();
         const hasMore = total > pageSize * pageNum;
         return { articles, hasMore };
@@ -67,6 +66,13 @@ const Query = {
                 .limit(5);
             return searchResult;
         }
+    },
+    getUserArticle: async (_, { userId }, { Article }) => {
+        const article = await Article.find({
+            createdBy: userId
+        });
+        console.log('xcxz', article);
+        return article;
     }
 };
 
