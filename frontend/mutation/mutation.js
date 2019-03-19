@@ -85,3 +85,35 @@ export const DISLIKE = gql`
         }
     }
 `;
+
+export const Update_User_Article = gql`
+    mutation(
+        $articleId: ID!
+        $userId: ID!
+        $title: String!
+        $imageUrl: String!
+        $kind: [String]
+        $description: String!
+    ) {
+        updateUserArticle(
+            articleId: $articleId
+            userId: $userId
+            title: $title
+            imageUrl: $imageUrl
+            kind: $kind
+            description: $description
+        ) {
+            _id
+            title
+            description
+            imageUrl
+            kind
+            createdDate
+            trumbs_up
+            createdBy {
+                _id
+                avatar
+            }
+        }
+    }
+`;
