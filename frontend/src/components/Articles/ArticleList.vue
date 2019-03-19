@@ -271,8 +271,10 @@ h5 {
 }
 
 h1 {
+  position: relative !important;
   font-size: 36px;
   font-weight: 400;
+  text-align: center;
 }
 
 h3 {
