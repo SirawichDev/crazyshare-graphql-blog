@@ -82,29 +82,28 @@
           solo-inverted
           prepend-inner-icon="search"
         ></v-text-field>
-          <v-card
-
-            id="search__result"
-            v-if="searchResult.length"
-          >
-            <v-list>
-              <v-list-tile
-
-                v-for="search in searchResult"
-                :key="search._id"
-              >
-                <v-list-tile-title> {{search.title}}
-                  <v-list-tile-avatar>
-                    <img :src="search.imageUrl">
-                  </v-list-tile-avatar>
-                  <span
-                    color="white"
-                    class="font-weight-thin"
-                  >{{search.description}}</span>
-                </v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-card>
+        <v-card
+          id="search__result"
+          v-if="searchResult.length"
+        >
+          <v-list>
+            <v-list-tile
+              v-for="search in searchResult"
+              :key="search._id"
+              @click="goResult(search._id)"
+            >
+              <v-list-tile-title> {{search.title}}
+                <v-list-tile-avatar>
+                  <img :src="search.imageUrl">
+                </v-list-tile-avatar>
+                <span
+                  color="white"
+                  class="font-weight-thin"
+                >{{search.description}}</span>
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-card>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
           <v-btn
@@ -142,6 +141,24 @@
               color="primary"
             >{{item.icon}}</v-icon>
             <h3 id="title"> {{item.title}}</h3>
+          </v-btn>
+       <v-btn
+            flat
+            @click="signoutUser"
+            v-if="user"
+          >
+            <v-icon
+              class="hidden-sm-only"
+              left
+              color="primary"
+            ></v-icon>
+            <v-badge
+              right
+              color="blue darken-2"
+            >
+
+              <h3 id="title">Logout</h3>
+            </v-badge>
           </v-btn>
 
         </v-toolbar-items>
@@ -226,7 +243,7 @@ export default {
       if (this.user) {
         items = [
           { icon: "chat", title: "Article", link: "/article" },
-          { icon: "polymer", title: "Logout", link: "/logout" }
+
         ];
       }
       return items;
@@ -240,8 +257,7 @@ export default {
       if (this.user) {
         items = [
           { icon: "chat", title: "Create Article", link: "/articles/create" },
-          { icon: "whatshot", title: "U Profile", link: "/profile" },
-          { icon: "polymer", title: "Logout", link: "/logout" }
+          { icon: "whatshot", title: "U Profile", link: "/profile" }
         ];
       }
       return items;
@@ -257,6 +273,14 @@ export default {
   methods: {
     toggle() {
       this.sideNav = !this.sideNav;
+    },
+    signoutUser() {
+      this.$store.dispatch("signoutUser");
+    },
+    goResult(id) {
+      this.searchSentense = "";
+      this.$router.push(`/article/${id}`);
+      this.$store.commit("clearSearchTab");
     },
     searchingArticle() {
       this.$store.dispatch("searchArticle", {
