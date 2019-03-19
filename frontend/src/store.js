@@ -8,7 +8,12 @@ import {
     SEARCHING,
     GET_USER_ARTICLE
 } from '../query/queries';
-import { SIGNIN_USER, SIGNUP_USER, ADD_ARTICLE } from '../mutation/mutation';
+import {
+    SIGNIN_USER,
+    SIGNUP_USER,
+    ADD_ARTICLE,
+    Update_User_Article
+} from '../mutation/mutation';
 import router from './router';
 
 Vue.use(Vuex);
@@ -31,7 +36,6 @@ export default new Vuex.Store({
             if (payload !== null) {
                 state.searchResult = payload;
             }
-            console.log('x');
         },
         loading: (state, payload) => {
             state.loading = payload;
@@ -69,7 +73,7 @@ export default new Vuex.Store({
                 })
                 .then(({ data }) => {
                     commit('loading', false);
-                    console.log(data);
+                    console.log({ data });
                     commit('setUser', data.currentUser);
                 })
                 .catch(err => {
@@ -77,9 +81,32 @@ export default new Vuex.Store({
                     console.error(err);
                 });
         },
+        updateUserArticle: ({ state, commit }, payload) => {
+            client
+                .mutate({
+                    mutation: Update_User_Article,
+                    variables: payload
+                })
+                .then(({ data }) => {
+                    const index = state.userArticles.findIndex(
+                        article =>
+                            article._id ===
+                            data.getUserArticle.getUserArticle._id
+                    );
+                    const userarticle = [
+                        ...state.userArticles.slice(0, index),
+                        data.updateUserArticle,
+                        ...state.userArticles.slice(index + 1)
+                    ];
+                    commit('setUserArticle', userarticle);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
         getUserArticle: ({ commit }, payload) => {
             commit('loading', true);
-            console.log('ds');
+
             client
                 .query({
                     query: GET_USER_ARTICLE,
@@ -127,7 +154,7 @@ export default new Vuex.Store({
                     commit('error', err);
                 });
         },
-        signUpuser: async ({ commit }, payload) => {
+        signUpuser: ({ commit }, payload) => {
             localStorage.setItem('token', '');
             client
                 .mutate({
