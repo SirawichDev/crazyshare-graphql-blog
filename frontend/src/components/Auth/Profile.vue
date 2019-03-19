@@ -1,9 +1,10 @@
 <template>
 <v-app>
-  <v-container  class="text-xs-center">
-          <div v-if="loading">Loading</div>
+            <div v-if="loading">
+              <loader></loader>
+          </div>
+  <v-container      v-else class="text-xs-center">
     <v-flex
-    v-else
       sm6
       offset-sm3
     >
@@ -25,9 +26,9 @@
             <v-card-title primary-title>
               <div class="headline">
                 {{this.user.username}}
-                <div>Joined {{user.joinDate}}</div>
+                <div>Joined {{user.joinDate.split(`GMT+0700 (Indochina Time)`).toString()}}</div>
                 <div class="hidden-xs-only font-weight-thin">{{user.bookmarks.length}} Bookmarks</div>
-                <div class="hidden-xs-only font-weight-thin">added</div>
+                <div class="hidden-xs-only font-weight-thin">Your Article {{userArticles.length}}</div>
               </div>
             </v-card-title>
           </v-flex>
@@ -65,16 +66,64 @@
             </v-flex>
         </v-layout>
     </v-container>
+    <v-container v-if="!userArticles.length">
+<v-layout row wrap>
+<v-flex xs12>
+  <h2>Sorry You're not created Article Yet :(</h2>
+</v-flex>
+</v-layout>
+    </v-container>
+    <v-container class="mt-3" v-else>
+<v-flex xs12>
+ <h2 class="font-weight-light">Your  Post
+   <span class="font-weight-regular">({{userArticles.length}})</span>
+   </h2>
+</v-flex>
+<v-layout row wrap>
+<v-flex xs12 v-for="userArticle in userArticles" :key="userArticle._id">
+  <v-card class="mt-3 ml-1 mr-2" hover>
+    <v-btn color="success" floating fab small dark>
+      <v-icon>edit</v-icon>
+    </v-btn>
+       <v-btn color="error" floating fab small dark>
+      <v-icon>delete</v-icon>
+    </v-btn>
+    <v-card-media
+      contain
+      height="30vh"
+      :src="userArticle.imageUrl"
+    >
+
+    </v-card-media>
+  </v-card>
+</v-flex>
+</v-layout>
+    </v-container>
   </v-container>
 </v-app>
 </template>
 
 <script>
+import Loader from '../../components/Loader/Loader.vue';
 import { mapGetters } from "vuex";
 export default {
   name: "Profile",
+  components:{
+      Loader
+  },
   computed: {
-    ...mapGetters(["user","loading"])
+    ...mapGetters(["user","loading","userArticles"])
+  },
+  created(){
+    this.getUserArticle();
+  },
+  methods: {
+       getUserArticle(){
+         console.log('ss',this.user._id);
+         this.$store.dispatch('getUserArticle',{
+           userId: this.user._id
+         });
+       }
   },
 };
 </script>
