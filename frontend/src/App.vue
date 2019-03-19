@@ -221,11 +221,7 @@ export default {
     };
   },
   watch: {
-    user(newvalue) {
-      if (newvalue) {
-        this.snackbar = true;
-      }
-    },
+
     authError(value) {
       if (value !== null) {
         this.authErrorSnackbar = true;
