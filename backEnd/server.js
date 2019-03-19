@@ -14,10 +14,7 @@ const User = require('./models/User');
 const Article = require('./models/Article');
 
 mongoose
-    .connect(
-        process.env.M_DB,
-        { useNewUrlParser: true }
-    )
+    .connect(process.env.M_DB, { useNewUrlParser: true })
     .then(() => console.log('Mongo Connected'))
     .catch(err => console.log(err));
 const getUser = async token => {
@@ -44,6 +41,9 @@ const server = new ApolloServer({
         return { User, Article, currentUser: await getUser(token) };
     }
 });
-server.listen().then(({ url }) => {
+// server.listen({port: process.env.PORT || 4000}).then(({ url }) => {
+//     console.log(`Listen on port ${url}`);
+// });
+server.listen(4000).then(({ url }) => {
     console.log(`Listen on port ${url}`);
 });
