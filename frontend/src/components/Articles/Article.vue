@@ -138,6 +138,7 @@ import { GET_SINGLE_ARTICLE } from "../../../query/queries";
 import { ADD_ARTICLE_MESSAGE, LIKE, DISLIKE } from "../../../mutation/mutation";
 import { mapGetters } from "vuex";
 export default {
+  /* eslint-disable */
   name: "Article",
   props: ["articleId"],
   data() {
@@ -186,7 +187,6 @@ export default {
       }
     },
     likeArticle() {
-      console.log(this.user);
       this.$apollo
         .mutate({
           mutation: LIKE,
@@ -216,7 +216,6 @@ export default {
         });
     },
     dislikeArticle() {
-      console.log(this.user);
       this.$apollo
         .mutate({
           mutation: DISLIKE,
@@ -243,7 +242,6 @@ export default {
             bookmarks: data.dislike.bookmarks
           };
           this.$store.commit("setUser", updateUser);
-          console.log(this.user.bookmarks);
         })
         .catch(err => {
           console.log(err);
@@ -273,8 +271,6 @@ export default {
                   articleId: this.articleId
                 }
               });
-              // console.log('data', data);
-              // console.log('chat', chat);
               data.getSingleArticle.messages.unshift(chat);
               cache.writeQuery({
                 query: GET_SINGLE_ARTICLE,
@@ -287,7 +283,6 @@ export default {
           })
           .then(({ data }) => {
             this.$refs.form.reset();
-            console.log(data.chat);
           })
           .catch(err => {
             console.log(err);
