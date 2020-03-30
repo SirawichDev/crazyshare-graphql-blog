@@ -11,8 +11,8 @@ Vue.component('error', ErrorAlert);
 Vue.use(VueApollo);
 
 export const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
-    // uri: 'https://backend-frrtzjtzye.now.sh/graphql',
+    // uri: 'http://localhost:4000/graphql',
+    uri: 'https://backend-frrtzjtzye.now.sh/graphql',
     fetchOptions: {
         credentials: 'include'
     },
